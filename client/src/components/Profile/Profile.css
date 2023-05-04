@@ -1,0 +1,15 @@
+.cart_title {
+  margin-top: 0;
+  background-color: aqua;
+}
+div.cart_title > h1 {
+  color: black;
+}
+.gprice {
+  position: absolute;
+  right: 7%;
+}
+.totalPrice {
+  position: absolute;
+  right: 5%;
+}
