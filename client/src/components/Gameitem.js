@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-const Gameitem = ({ name, imageSrc, rating, released, ratings_count }) => {
-  const link = "/game/" + name.replace(/\s/g, "");
+const Gameitem = ({ gameId, name, imageSrc, rating, released, ratings_count }) => {
+  const link = "/game/" + gameId//name.replace(/\s/g, "");
   return (
     <Link to={link}>
       <div className="my-3">

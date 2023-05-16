@@ -87,7 +87,7 @@ const Cart = () => {
     setPrice(sum);
   }, []);
   const removeItem = (name) => {
-    const cart = profileData.cart.filter(function(obj) {
+    const cart = profileData.cart.filter(function (obj) {
       return obj.name !== name;
     });
 
@@ -150,8 +150,8 @@ const Cart = () => {
                     sx={{ displayPrint: "flex", flexDirection: "row" }}
                     divider
                   >
-                    <span>{g.img}</span>
-                    <span className="gameName">{g.name}</span>
+                    <img src={g.img} style={{ height: "10%", width: "10%" }} />
+                    <span className="gameName">{" " + g.name}</span>
                     <span className="gprice">{g.price}</span>
                     <IconButton
                       aria-label="delete"
