@@ -25,7 +25,9 @@ function App() {
   const [cartItems, setCartItem] = useState([]);
 
   const [profileData, setProfile] = useState({
-    name: "",
+    userName: "",
+    firstName: "",
+    lastName: "",
     phone: 0,
     email: "",
     password: "",
@@ -44,7 +46,9 @@ function App() {
       );
       if (res) {
         setProfile({
-          name: res.data.name,
+          userName: res.data.userName,
+          firstName: res.data.firstName,
+          firstName: res.data.lastName,
           phone: res.data.phoneNumber,
           email: res.data.email,
           password: "",

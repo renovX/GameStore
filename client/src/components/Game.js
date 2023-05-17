@@ -5,6 +5,10 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { LoginContext } from "../Context/LoginContext";
+import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import axios from "axios";
 //import "../../images/img1.jpeg";
 const capitalize = (str) => (str.charAt(0).toUpperCase() + str.slice(1))
@@ -30,6 +34,9 @@ const Game = ({ cartitem, cartfn }) => {
   const { profileData, setProfile } = useContext(LoginContext);
   const { gameId } = useParams();
   const [gameData, setGameData] = useState({ images: [] });
+  const [commData, setCommData] = useState([])
+  const [purchased, setPurchase] = useState(false)
+  const [commStatus, setCommStatus] = useState(true)
   const addToCart = (item) => {
     const p = profileData;
     const cart = profileData.cart;
@@ -43,6 +50,14 @@ const Game = ({ cartitem, cartfn }) => {
     let path = `/profile/cart/ac`;
     navigate(path);
   };
+  const handleForm = (event) => {
+    event.preventDefault()
+    const formData = new FormData(event.currentTarget)
+    let responseBody = {}
+    formData.forEach((value, property) => responseBody[property] = value);
+    console.log(responseBody)
+
+  }
   useEffect(() => {
     //console.log("Okb");
     async function fetchGameData() {
@@ -53,7 +68,7 @@ const Game = ({ cartitem, cartfn }) => {
       const respdata = res.data
       const pcpfm = respdata.platforms.find(el => el.platform.name == 'PC')
       const gameImages = res2.data.results.map(img => img.image)
-      console.log((res2.data.results.map(img => img.image)));
+
       setGameData({
         name: respdata.name,
         images: gameImages ? gameImages : [''],
@@ -69,12 +84,19 @@ const Game = ({ cartitem, cartfn }) => {
       });
 
     }
-
+    async function fetchCommentData() {
+      const commentData = (await axios.get(`http://localhost:${process.env.REACT_APP_BACKEND_PORT}/comment/get-comments/${gameId}`)).data
+      setCommData(commentData)
+      console.log(commentData)
+    }
     //console.log(gameData);
     fetchGameData();
+    fetchCommentData()
+    if (profileData.library.find(game => game.id == gameId))
+      setPurchase(true)
+
   }, []);
-  //const data = gameData;
-  //const sysreq = data.systemreq;
+
 
   return (
     <div className="gamePage">
@@ -85,7 +107,8 @@ const Game = ({ cartitem, cartfn }) => {
         <div className="game_images">
           <div
             id="carouselExample"
-            className="carousel carousel-dark "
+            className="carousel carousel-dark carousel-fade "
+            data-bs-ride="carousel"
           // style={{ height: "50rem" }}
           >
             <div className="carousel-inner">
@@ -170,20 +193,24 @@ const Game = ({ cartitem, cartfn }) => {
                 <strong>Price:{gameData.price}</strong>
               </div>
               {profileData.name != "" ? (
+
                 <button
                   type="button"
                   className="btn btn-outline-success"
                   onClick={() => {
-                    addToCart({
-                      img: gameData.bgim,
-                      name: gameData.name,
-                      id: gameId,
-                      price: +gameData.price,
-                    });
-                    routeChange();
+                    const route = purchased ? '/profile/library' : '/profile/cart/ac'
+                    if (!purchased)
+                      addToCart({
+                        img: gameData.bgim,
+                        name: gameData.name,
+                        id: gameId,
+                        price: +gameData.price,
+
+                      });
+                    navigate(route)
                   }}
                 >
-                  Add to Cart
+                  {purchased ? (<span>View In Library</span>) : <span>Add To Cart</span>}
                 </button>
               ) : (
                 <></>
@@ -286,7 +313,7 @@ const Game = ({ cartitem, cartfn }) => {
         <div>
           <h2>Customer Review</h2>
         </div>
-        <form>
+        <form onSubmit={handleForm}>
           <div className="mb-3">
             <label htmlFor="exampleFormControlTextarea1" className="form-label">
               Add Your Review
@@ -296,11 +323,36 @@ const Game = ({ cartitem, cartfn }) => {
               id="exampleFormControlTextarea1"
               rows="3"
             ></textarea>
+            <ToggleButtonGroup
+              value={commStatus}
+              exclusive
+              onChange={() => { setCommStatus(!commStatus) }}
+              aria-label="text alignment"
+            >
+              <ToggleButton value={true} aria-label="left aligned">
+                <ThumbUpIcon sx={{ color: 'green' }} />
+              </ToggleButton>
+              <ToggleButton value={false} aria-label="centered">
+                <ThumbDownIcon sx={{ color: 'red' }} />
+              </ToggleButton>
+            </ToggleButtonGroup>
           </div>
-          <button type="button" className="btn btn-primary">
+          <button type="submit" className="btn btn-primary" style={{ marginBottom: '3%' }}>
             Submit
           </button>
         </form>
+        {commData ? commData.map(comment => (
+          <div className="comments">
+
+            <div className="custdetail">
+              <h3 style={{ color: 'blue' }}>{comment.name}</h3>
+              <div className="cust-rating">
+                <div style={{ display: 'flex', flexDirection: 'row' }}><h2>Not Recommended</h2><SentimentVeryDissatisfiedIcon sx={{ color: 'red' }} fontSize="large" /></div>
+                <text>Total Hours: {comment.hours}h</text>
+              </div>
+            </div>
+            <p style={{ color: 'black' }}>{comment.data}
+            </p></div>)) : (<></>)}
       </div>
     </div>
   );

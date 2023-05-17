@@ -28,15 +28,15 @@ import { useParams } from "react-router-dom";
 import { display } from "@mui/system";
 const userId = "";
 const imgaddr =
-  "https://i0.wp.com/insider-gaming.com/wp-content/uploads/2022/12/cyberpunk-2077-game-of-the-year-edition-scaled-e1670012903149.jpg?resize=1024%2C576&ssl=1";
+  "https://media.rawg.io/media/games/456/456dea5e1c7e3cd07060c14e96612001.jpg";
 
 const Imag = () => {
   return <img src={imgaddr}></img>;
 };
-const GameCard = ({ name }) => {
+const GameCard = ({ name, img }) => {
   return (
     <Card sx={{ width: 345 }}>
-      <CardMedia sx={{ height: 300 }} image={imgaddr} title="green iguana" />
+      <CardMedia sx={{ height: 300 }} image={img} title="green iguana" />
       <CardContent sx={{ height: 30, p: 0 }}>
         <Typography component="div" variant="h6">
           {name}
@@ -68,7 +68,7 @@ const Library = () => {
       <Grid container>
         {gameArray.map((a) => (
           <Grid xs={4} sx={{ p: 3 }}>
-            <GameCard name={a.name} />
+            <GameCard name={a.name} img={a.img} />
           </Grid>
         ))}
       </Grid>

@@ -62,7 +62,7 @@ export default function TemporaryDrawer() {
     const url = `http://localhost:${process.env.REACT_APP_BACKEND_PORT}/auth/logout`;
     Cookies.remove("token");
     await axios.post(url, { cart: profileData.cart, email: profileData.email });
-    console.log(profileData.cart[0]);
+    //console.log(profileData.cart[0]);
     navigate("/");
   };
   const list = (anchor) => (

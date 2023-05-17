@@ -43,7 +43,9 @@ const theme = createTheme();
 export default function SignIn() {
   const setUserProfile = (data) => {
     setProfile({
-      name: data.name,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      userName: data.userName,
       phone: data.phoneNumber,
       email: data.email,
       password: "",
@@ -78,13 +80,9 @@ export default function SignIn() {
     const url = `http://localhost:${process.env.REACT_APP_BACKEND_PORT}/auth/login`;
     //alert(url);
 
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
     try {
       const res = await axios.post(url, {
-        email: data.get("email"),
+        emus: data.get("email"),
         password: data.get("password"),
       });
 
@@ -138,9 +136,9 @@ export default function SignIn() {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="Email Address/UserName"
               name="email"
-              autoComplete="email"
+              autoComplete="email/username"
               autoFocus
             />
             <TextField

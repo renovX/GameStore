@@ -18,6 +18,15 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 import { useContext } from "react";
 import { LoginContext } from "../../Context/LoginContext";
+function userNameChk(uname) {
+  var format = /[ `!@#$%^&*()+\-=\[\]{};':"\\|,.<>\/?~]/;
+  const hasSpace = /\s/g.test(uname)
+  const hasspch = format.test(uname)
+  const firstCap = uname[0] == uname[0].toUpperCase()
+  if (hasSpace || hasspch || firstCap)
+    return true
+  return false
+}
 
 function Copyright(props) {
   return (
@@ -51,11 +60,18 @@ export default function Register() {
 
     const data = new FormData(event.currentTarget);
     const dform = {
+      userName: data.get('userName'),
       email: data.get("email"),
       password: data.get("password"),
       phone: data.get("phone-number"),
-      name: data.get("firstName") + " " + data.get("lastName"),
+      firstName: data.get("firstName"),
+      lastName: data.get("lastName"),
     };
+    if (userNameChk(data.get('userName'))) {
+      setError(true)
+      setMessage("Invalid UserName(No space,No specialchar, first letter lowercase)")
+      return
+    }
     if (data.get("password") != data.get("confirm-password")) {
       setError(true);
       setMessage("Passwords do not match!");
@@ -64,7 +80,7 @@ export default function Register() {
 
       return;
     }
-    if (!(dform.email && dform.password && dform.phone && dform.name)) {
+    if (!(dform.email && dform.password && dform.phone && dform.firstName && dform.lastName && dform.userName)) {
       setError(true);
       setMessage("Fill all the details!");
       return;
@@ -75,12 +91,14 @@ export default function Register() {
     if (resp.data == "Account Exists") {
       setError(true);
 
-      setMessage("User is already registered");
+      setMessage("User is already registered with same username or email");
       return;
     }
 
     setProfile({
-      name: resp.data.name,
+      firstName: resp.data.firstName,
+      lastName: resp.data.lastName,
+      userName: resp.data.userName,
       phone: resp.data.phone,
       email: resp.data.email,
       password: resp.data.password,
@@ -121,6 +139,16 @@ export default function Register() {
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="userName"
+                  label="User Name"
+                  name="userName"
+                  autoComplete="username"
+                />
+              </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"

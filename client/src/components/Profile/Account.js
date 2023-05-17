@@ -2,7 +2,7 @@ import React from "react";
 import "./Profile.css";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import Paper from "@mui/material/Paper";
+import { Paper, Snackbar, Alert } from "@mui/material";
 import { useRef } from "react";
 import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
@@ -34,10 +34,11 @@ const Account = () => {
   //const firstNameRef = useRef(null);
 
   const { profileData, setProfile } = useContext(LoginContext);
-  const [name, setName] = useState(profileData.name);
+  const [firstName, setFName] = useState(profileData.firstName);
+  const [lastName, setLName] = useState(profileData.lastName);
   const [email, setEmail] = useState(profileData.email);
   const [phone, setPhone] = useState(+profileData.phone);
-  const [password, setPassword] = useState(profileData.password);
+  const [password, setPassword] = useState('');
   //address states
   const [line1, setLine1] = useState(profileData.addr[0]);
   const [line2, setLine2] = useState(profileData.addr[1]);
@@ -49,21 +50,24 @@ const Account = () => {
   const [passval, setPassVal] = useState("password");
   const [confirmpass, setConfirmPass] = useState("");
   const [passwordChanged, setPassChanged] = useState(false);
+  const [snakb, toggleSB] = useState(false)
   const style = { bgcolor: "black" };
   let navigate = useNavigate();
   const handleSubmit = async () => {
     if (passwordChanged && password != confirmpass)
       return alert("Password is not same");
     const updatedProfile = {
-      name: name,
+      firstName: firstName,
+      lastName: lastName,
       email: email,
       phone: phone,
       password: password,
-      addr: [line1, line1, city, state, country],
+      addr: [line1, line2, city, state, country],
     };
     const url = `http://localhost:${process.env.REACT_APP_BACKEND_PORT}/profile/update`;
     try {
       await axios.post(url, updatedProfile);
+      toggleSB(true)
     } catch (e) {
       console.log(e);
     }
@@ -171,17 +175,40 @@ const Account = () => {
                       scope="row"
                       sx={{ width: "20%", height: "50px" }}
                     >
-                      <Typography color="blue">Name</Typography>
+                      <Typography color="blue"> First Name</Typography>
                     </TableCell>
                     <TableCell align="right">
                       <TextField
-                        id="name"
-                        value={name}
+                        id="firstName"
+                        value={firstName}
                         variant="outlined"
                         required
                         sx={{ width: "100%" }}
                         onChange={(e) => {
-                          setName(e.target.value);
+                          setFName(e.target.value);
+                        }}
+                      />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      sx={{ width: "20%", height: "50px" }}
+                    >
+                      <Typography color="blue"> Last Name</Typography>
+                    </TableCell>
+                    <TableCell align="right">
+                      <TextField
+                        id="lastName"
+                        value={lastName}
+                        variant="outlined"
+                        required
+                        sx={{ width: "100%" }}
+                        onChange={(e) => {
+                          setLName(e.target.value);
                         }}
                       />
                     </TableCell>
@@ -220,7 +247,7 @@ const Account = () => {
                         id="email"
                         value={email}
                         sx={{ width: "100%" }}
-                        //onChange={(e) => {setEmail(e.target.value);}}
+                      //onChange={(e) => {setEmail(e.target.value);}}
                       />
                     </TableCell>
                   </TableRow>
@@ -400,6 +427,15 @@ const Account = () => {
           </AccordionDetails>
         </Accordion>
       </div>
+      <Snackbar
+        open={snakb}
+        autoHideDuration={6000}
+        onClose={() => { toggleSB(false) }}
+        message="Note archived"
+
+      ><Alert onClose={() => { toggleSB(false) }} severity="success" sx={{ width: '100%' }}>
+          Profile Updated
+        </Alert></Snackbar>
     </Container>
   );
 };
