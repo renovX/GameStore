@@ -34,22 +34,11 @@ import { LoginContext } from "../../Context/LoginContext";
 const Account = () => {
   //const firstNameRef = useRef(null);
 
-  const { profileData, setProfile } = useContext(LoginContext);
-  const [firstName, setFName] = useState(profileData.firstName);
-  const [lastName, setLName] = useState(profileData.lastName);
-  const [email, setEmail] = useState(profileData.email);
-  const [phone, setPhone] = useState(+profileData.phone);
-  const [password, setPassword] = useState("");
-  //address states
-  const [line1, setLine1] = useState(profileData.addr[0]);
-  const [line2, setLine2] = useState(profileData.addr[1]);
-  const [city, setCity] = useState(profileData.addr[2]);
-  const [state, setState] = useState(profileData.addr[3]);
-  const [country, setCountry] = useState(profileData.addr[4]);
-
+  const { profileData } = useContext(LoginContext);
   const [visible1, setVisiblity1] = useState(false);
   const [visible2, setVisiblity2] = useState(false);
   //const [passval, setPassVal] = useState("password");
+  const [password, setPassword] = useState("")
   const [confirmpass, setConfirmPass] = useState("");
   const [passwordChanged, setPassChanged] = useState(false);
   const [snakb, toggleSB] = useState(false)
@@ -72,10 +61,10 @@ const Account = () => {
     if (password != "") updatedProfile.password = password
 
     const token = Cookies.get('token')
-    console.log(token)
+    //console.log(token)
     const url = `http://localhost:${process.env.REACT_APP_BACKEND_PORT}/profile/update`;
     try {
-      const resp = await axios.post(url, updatedProfile);
+      const resp = await axios.post(url, updatedProfile, { headers: { Authorization: `Bearer ${token}` } });
       console.log(resp.data)
       toggleSB(true)
     } catch (e) {
@@ -209,9 +198,6 @@ const Account = () => {
                           variant="outlined"
                           required
                           sx={{ width: "100%" }}
-                          onChange={(e) => {
-                            setLName(e.target.value);
-                          }}
                         />
                       </TableCell>
                     </TableRow>

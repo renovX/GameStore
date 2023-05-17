@@ -1,10 +1,12 @@
 import "./App.css";
+import Page404 from "./page/Page404";
+import PrivateRoutes from "./utils/PrivateRoutes";
 import React, { useEffect } from "react";
 import "../node_modules/bootstrap/dist/css/bootstrap.css";
 import Navbar from "./components/Navbar.js";
 import "./components/Navbar.css";
 import GamesByGenre from "./components/GamesByGenre";
-import { Routes, Route, BrowserRouter, Router } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Landing from "./Landing";
 import Game from "./components/Game";
 import Cart from "./components/Profile/Cart";
@@ -25,6 +27,7 @@ function App() {
   const [cartItems, setCartItem] = useState([]);
 
   const [profileData, setProfile] = useState({
+    loggedIn: false,
     userName: "",
     firstName: "",
     lastName: "",
@@ -46,6 +49,7 @@ function App() {
       );
       if (res) {
         setProfile({
+          loggedIn: true,
           userName: res.data.userName,
           firstName: res.data.firstName,
           firstName: res.data.lastName,
@@ -83,15 +87,20 @@ function App() {
                 path="game/:gameId"
                 element={<Game cartitem={cartItems} cartfn={setCartItem} />}
               />
-              <Route
-                path="profile/cart/:payStatus"
-                element={<Cart cartitem={cartItems} cartfn={setCartItem} />}
-              />
-              <Route path="profile/account" element={<Account />} />
-              <Route path="profile/library" element={<Library />} />
+              <Route path='profile' element={<PrivateRoutes isLogged={profileData.loggedIn} />}>
+                <Route
+                  path="cart/:payStatus"
+                  element={<Cart cartitem={cartItems} cartfn={setCartItem} />}
+                />
+                <Route path="account" element={<Account />} />
+                <Route path="library" element={<Library />} />
+              </Route>
+
               <Route path="auth/signin" element={<SignIn />} />
               <Route path="auth/register" element={<Register />} />
+              <Route path="*" element={<Page404 />} />
             </Route>
+
           </Routes>
         </LoginContext.Provider>
       </DrawerContext.Provider>

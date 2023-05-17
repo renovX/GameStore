@@ -43,6 +43,7 @@ const theme = createTheme();
 export default function SignIn() {
   const setUserProfile = (data) => {
     setProfile({
+      loggedIn: true,
       firstName: data.firstName,
       lastName: data.lastName,
       userName: data.userName,
@@ -89,15 +90,11 @@ export default function SignIn() {
       if (res) {
         //console.log(res);
         setUserProfile(res.data);
-        console.log(typeof res.data.token);
-        console.log("C:" + Cookies.get());
         Cookies.remove("token");
         Cookies.set("token", String(res.data.token), {
           path: "/",
           expires: 1 / 288,
         });
-        //Cookies.set("token", "okbud", { expires: 1 });
-        //console.log(res.data.token);
         setDrawer(true);
         navigate("/profile/account");
       }

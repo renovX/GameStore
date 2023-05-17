@@ -63,7 +63,9 @@ export default function TemporaryDrawer() {
     Cookies.remove("token");
     await axios.post(url, { cart: profileData.cart, email: profileData.email });
     //console.log(profileData.cart[0]);
+    setProfile({ islogged: false })
     navigate("/");
+
   };
   const list = (anchor) => (
     <Box

@@ -96,6 +96,7 @@ export default function Register() {
     }
 
     setProfile({
+      loggedIn: true,
       firstName: resp.data.firstName,
       lastName: resp.data.lastName,
       userName: resp.data.userName,
