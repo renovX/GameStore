@@ -20,24 +20,19 @@ const profileController = {
   getData: async (req, res) => {
     //console.log(req.cookies);
     try {
-      if (req.cookies.token) {
-        res.setHeader("Access-Control-Allow-Credentials", true);
-        const tokenData = JSON.parse(atob(req.cookies.token.split(".")[1]));
-        const profile = await Profile.findOne({ email: tokenData.email });
-        res.send(profile);
-        //res.send("Hi");
-        console.log("Data sent succesfully");
-      } else {
-        console.log("Data failed");
-        res.sendStatus(401);
-      }
-      //const email = req.body;
-      // const cookieObj = cookieParser(req.cookies);
-      //if (cookieObj.token) res.send(cookieObj.token);
-      /*const profile = await Profile.findOne({
-        email: email,
-      });
-      if (profile) res.send(profile);*/
+      //if (req.cookies.token) {
+      res.setHeader("Access-Control-Allow", true);
+      console.log(req.headers[0])
+      const tokenData = JSON.parse(atob(req.cookies.token.split(".")[1]));
+      const profile = await Profile.findOne({ email: tokenData.email });
+      res.send(profile);
+      //res.send("Hi");
+      console.log("Data sent succesfully");
+      //} else {
+      // console.log("Failed to fetch profile data: UnAuthorized");
+      //res.sendStatus(401);
+      //}
+
     } catch (e) {
       console.log(e);
       res.send(e.message);

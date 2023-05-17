@@ -15,7 +15,8 @@ const app = express();
 app.use(
   cors({
     origin: "http://localhost:3000",
-    credentials: "true",
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    /*credentials: "true",*/
   })
 );
 
@@ -30,7 +31,7 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use("/game", gameRouter);
-app.use("/profile", profileRouter);
+app.use("/profile", verify, profileRouter);
 app.use("/stripe", stripeRouter);
 app.use('/comment', commentRouter)
 app.use("/auth", authRouter);

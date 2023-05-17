@@ -7,14 +7,20 @@ const verifyToken = (req, res, next) => {
 };
 
 export default function verify(req, res, next) {
-  const token = req.cookies.token;
-  console.log(req)
-  console.log("fetched token:" + token);
+  res.setHeader("Access-Control-Allow-Headers", "Authorization");
+  const token = req.headers.authorization ? req.headers.authorization.split(' ')[1] : null
+  console.log('token:' + token)
+
+  if (!token) {
+    console.log('UnAuthorized')
+    return res.status(401).send('UnAuthorized')
+  }
   jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
     if (err) {
-      console.log("Unauthorized");
+      console.log("Invalid Token");
       res.sendStatus(403);
     } else {
+      console.log('Correct Token')
       //res.send("Authorized");
       next();
     }
