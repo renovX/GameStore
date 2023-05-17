@@ -1,7 +1,8 @@
 import React from "react";
+import Cookies from "js-cookie";
 import "./Profile.css";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Form } from "react-router-dom";
 import { Paper, Snackbar, Alert } from "@mui/material";
 import { useRef } from "react";
 import { useState, useEffect, useContext } from "react";
@@ -38,7 +39,7 @@ const Account = () => {
   const [lastName, setLName] = useState(profileData.lastName);
   const [email, setEmail] = useState(profileData.email);
   const [phone, setPhone] = useState(+profileData.phone);
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState("");
   //address states
   const [line1, setLine1] = useState(profileData.addr[0]);
   const [line2, setLine2] = useState(profileData.addr[1]);
@@ -46,27 +47,36 @@ const Account = () => {
   const [state, setState] = useState(profileData.addr[3]);
   const [country, setCountry] = useState(profileData.addr[4]);
 
-  const [visible, setVisiblity] = useState(false);
-  const [passval, setPassVal] = useState("password");
+  const [visible1, setVisiblity1] = useState(false);
+  const [visible2, setVisiblity2] = useState(false);
+  //const [passval, setPassVal] = useState("password");
   const [confirmpass, setConfirmPass] = useState("");
   const [passwordChanged, setPassChanged] = useState(false);
   const [snakb, toggleSB] = useState(false)
   const style = { bgcolor: "black" };
   let navigate = useNavigate();
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     if (passwordChanged && password != confirmpass)
       return alert("Password is not same");
+
+    const formData = new FormData(event.currentTarget)
+
     const updatedProfile = {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      phone: phone,
-      password: password,
-      addr: [line1, line2, city, state, country],
+      firstName: formData.get('firstName'),
+      lastName: formData.get('lastName'),
+      email: profileData.email,
+      phone: formData.get('phone'),
+      addr: [formData.get('line1'), formData.get('line2'), formData.get('city'), formData.get('state'), formData.get('country')],
     };
+    if (password != "") updatedProfile.password = password
+
+    const token = Cookies.get('token')
+    console.log(token)
     const url = `http://localhost:${process.env.REACT_APP_BACKEND_PORT}/profile/update`;
     try {
-      await axios.post(url, updatedProfile);
+      const resp = await axios.post(url, updatedProfile);
+      console.log(resp.data)
       toggleSB(true)
     } catch (e) {
       console.log(e);
@@ -89,27 +99,22 @@ const Account = () => {
         >
           <TextField
             id="password"
-            type={passval}
+            type={visible1 ? "" : "password"}
             variant="outlined"
             sx={{ width: "100%", ml: "0" }}
-            value={password}
+            defaultValue={password}
+            onClick={() => { setPassChanged(true) }}
             onChange={(e) => {
-              setPassword(e.target.value);
-              setPassChanged(true);
+              setPassword(e.target.value)
+
             }}
           />
           <IconButton
             onClick={() => {
-              if (passval == "password") {
-                setPassVal("");
-                setVisiblity(!visible);
-              } else {
-                setPassVal("password");
-                setVisiblity(!visible);
-              }
+              setVisiblity1(!visible1)
             }}
           >
-            {visible ? <VisibilityIcon /> : <VisibilityOffIcon />}
+            {visible1 ? <VisibilityIcon /> : <VisibilityOffIcon />}
           </IconButton>
         </div>
       );
@@ -125,26 +130,21 @@ const Account = () => {
         >
           <TextField
             id="password"
-            type={passval}
+            type={visible2 ? "" : "password"}
             variant="outlined"
             sx={{ width: "100%", ml: "0" }}
-            value={confirmpass}
+            defaultValue={confirmpass}
             onChange={(e) => {
               setConfirmPass(e.target.value);
             }}
           />
           <IconButton
             onClick={() => {
-              if (passval == "password") {
-                setPassVal("");
-                setVisiblity(!visible);
-              } else {
-                setPassVal("password");
-                setVisiblity(!visible);
-              }
-            }}
+              setVisiblity2(!visible2)
+            }
+            }
           >
-            {visible ? <VisibilityIcon /> : <VisibilityOffIcon />}
+            {visible2 ? <VisibilityIcon /> : <VisibilityOffIcon />}
           </IconButton>
         </div>
       );
@@ -164,108 +164,94 @@ const Account = () => {
             <Typography>Personal Information</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <TableContainer component={Paper} sx={{ m: "auto", width: "60%" }}>
-              <Table aria-label="simple table">
-                <TableBody>
-                  <TableRow
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      sx={{ width: "20%", height: "50px" }}
+            <Box component="form"
+              onSubmit={handleSubmit}
+              noValidate>
+              <TableContainer component={Paper} sx={{ m: "auto", width: "60%" }}>
+                <Table aria-label="simple table">
+                  <TableBody>
+                    <TableRow
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
-                      <Typography color="blue"> First Name</Typography>
-                    </TableCell>
-                    <TableCell align="right">
-                      <TextField
-                        id="firstName"
-                        value={firstName}
-                        variant="outlined"
-                        required
-                        sx={{ width: "100%" }}
-                        onChange={(e) => {
-                          setFName(e.target.value);
-                        }}
-                      />
-                    </TableCell>
-                  </TableRow>
-                  <TableRow
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      sx={{ width: "20%", height: "50px" }}
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        sx={{ width: "20%", height: "50px" }}
+                      >
+                        <Typography color="blue"> First Name</Typography>
+                      </TableCell>
+                      <TableCell align="right">
+                        <TextField
+                          id="firstName"
+                          name='firstName'
+                          defaultValue={profileData.firstName}
+                          variant="outlined"
+                          required
+                          sx={{ width: "100%" }}
+                        />
+                      </TableCell>
+                    </TableRow>
+                    <TableRow
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
-                      <Typography color="blue"> Last Name</Typography>
-                    </TableCell>
-                    <TableCell align="right">
-                      <TextField
-                        id="lastName"
-                        value={lastName}
-                        variant="outlined"
-                        required
-                        sx={{ width: "100%" }}
-                        onChange={(e) => {
-                          setLName(e.target.value);
-                        }}
-                      />
-                    </TableCell>
-                  </TableRow>
-                  <TableRow
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row" sx={{ width: "25%" }}>
-                      <Typography color="blue">Phone Number</Typography>
-                    </TableCell>
-                    <TableCell align="right">
-                      <TextField
-                        id="phone"
-                        label="Number"
-                        type="number"
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        value={phone}
-                        sx={{ width: "100%" }}
-                        onChange={(e) => {
-                          setPhone(+e.target.value);
-                        }}
-                      />
-                    </TableCell>
-                  </TableRow>
-                  <TableRow
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row" sx={{ width: "20%" }}>
-                      <Typography color="blue">Email</Typography>
-                    </TableCell>
-                    <TableCell align="right">
-                      <TextField
-                        variant="outlined"
-                        id="email"
-                        value={email}
-                        sx={{ width: "100%" }}
-                      //onChange={(e) => {setEmail(e.target.value);}}
-                      />
-                    </TableCell>
-                  </TableRow>
-                  <TableRow
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      sx={{ width: "auto" }}
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        sx={{ width: "20%", height: "50px" }}
+                      >
+                        <Typography color="blue"> Last Name</Typography>
+                      </TableCell>
+                      <TableCell align="right">
+                        <TextField
+                          id="lastName"
+                          name="lastName"
+                          defaultValue={profileData.lastName}
+                          variant="outlined"
+                          required
+                          sx={{ width: "100%" }}
+                          onChange={(e) => {
+                            setLName(e.target.value);
+                          }}
+                        />
+                      </TableCell>
+                    </TableRow>
+                    <TableRow
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
-                      <Typography color="blue">Password</Typography>
-                    </TableCell>
-                    <TableCell align="right">
-                      <PasswordField type="pass" />
-                    </TableCell>
-                  </TableRow>
-                  {passwordChanged ? (
+                      <TableCell component="th" scope="row" sx={{ width: "25%" }}>
+                        <Typography color="blue">Phone Number</Typography>
+                      </TableCell>
+                      <TableCell align="right">
+                        <TextField
+                          id="phone"
+                          name="phone"
+                          label="Number"
+                          type="number"
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          defaultValue={profileData.phone}
+                          sx={{ width: "100%" }}
+
+                        />
+                      </TableCell>
+                    </TableRow>
+                    <TableRow
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row" sx={{ width: "20%" }}>
+                        <Typography color="blue">Email</Typography>
+                      </TableCell>
+                      <TableCell align="right">
+                        <TextField
+                          variant="outlined"
+                          id="email"
+                          value={profileData.email}
+                          sx={{ width: "100%" }}
+                        //onChange={(e) => {setEmail(e.target.value);}}
+                        />
+                      </TableCell>
+                    </TableRow>
                     <TableRow
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
@@ -274,108 +260,117 @@ const Account = () => {
                         scope="row"
                         sx={{ width: "auto" }}
                       >
-                        <Typography color="blue">Confirm Password</Typography>
+                        <Typography color="blue">Password</Typography>
                       </TableCell>
                       <TableCell align="right">
-                        <PasswordField />
+                        <PasswordField type="pass" />
                       </TableCell>
                     </TableRow>
-                  ) : (
-                    <></>
-                  )}
-
-                  <TableRow
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row" sx={{ width: "20%" }}>
-                      <Typography color="blue">Address</Typography>
-                    </TableCell>
-                    <TableCell align="right">
-                      <table width="100%">
-                        <tbody>
-                          <tr>
-                            <td>
-                              <TextField
-                                id="address"
-                                variant="standard"
-                                label="Line 1"
-                                sx={{ width: "100%" }}
-                                value={line1}
-                                onChange={(e) => {
-                                  setLine1(e.target.value);
-                                }}
-                              />
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <TextField
-                                label="Line 2"
-                                variant="standard"
-                                sx={{ width: "100%" }}
-                                value={line2}
-                                onChange={(e) => {
-                                  setLine2(e.target.value);
-                                }}
-                              />
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <TextField
-                                label="City"
-                                variant="standard"
-                                sx={{ width: "100%" }}
-                                value={city}
-                                onChange={(e) => {
-                                  setCity(e.target.value);
-                                }}
-                              />
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <TextField
-                                label="State"
-                                variant="standard"
-                                sx={{ width: "100%" }}
-                                value={state}
-                                onChange={(e) => {
-                                  setState(e.target.value);
-                                }}
-                              />
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <TextField
-                                label="Country"
-                                variant="standard"
-                                value={country}
-                                onChange={(e) => {
-                                  setCountry(e.target.value);
-                                }}
-                              />
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell sx={{ width: "20%", alignItems: "center" }}>
-                      <Button
-                        variant="contained"
-                        color="success"
-                        onClick={handleSubmit}
+                    {passwordChanged ? (
+                      <TableRow
+                        sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                       >
-                        Submit
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
+                        <TableCell
+                          component="th"
+                          scope="row"
+                          sx={{ width: "auto" }}
+                        >
+                          <Typography color="blue">Confirm Password</Typography>
+                        </TableCell>
+                        <TableCell align="right">
+                          <PasswordField />
+                        </TableCell>
+                      </TableRow>
+                    ) : (
+                      <></>
+                    )}
+
+                    <TableRow
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row" sx={{ width: "20%" }}>
+                        <Typography color="blue">Address</Typography>
+                      </TableCell>
+                      <TableCell align="right">
+                        <table width="100%">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <TextField
+                                  id="address"
+                                  variant="standard"
+                                  name='line1'
+                                  label="Line 1"
+                                  sx={{ width: "100%" }}
+                                  defaultValue={profileData.addr[0]}
+
+                                />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <TextField
+                                  label="Line 2"
+                                  name='line2'
+                                  variant="standard"
+                                  sx={{ width: "100%" }}
+                                  defaultValue={profileData.addr[1]}
+
+                                />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <TextField
+                                  label="City"
+                                  name='city'
+                                  variant="standard"
+                                  sx={{ width: "100%" }}
+                                  defaultValue={profileData.addr[2]}
+                                />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <TextField
+                                  label="State"
+                                  name='state'
+                                  variant="standard"
+                                  sx={{ width: "100%" }}
+                                  defaultValue={profileData.addr[3]}
+                                />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <TextField
+                                  label="Country"
+                                  name='country'
+                                  variant="standard"
+                                  defaultValue={profileData.addr[4]}
+                                />
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell sx={{ width: "20%", alignItems: "center" }}>
+                        <Button
+                          variant="contained"
+                          color="success"
+                          //onClick={handleSubmit}
+                          type="submit"
+                        >
+                          Submit
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Box>
           </AccordionDetails>
         </Accordion>
         <Accordion sx={style}>

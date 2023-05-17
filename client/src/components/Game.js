@@ -53,9 +53,7 @@ const Game = ({ cartitem, cartfn }) => {
   const handleForm = (event) => {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
-    let responseBody = {}
-    formData.forEach((value, property) => responseBody[property] = value);
-    console.log(responseBody)
+    console.log(formData.get('comment-text'))
 
   }
   useEffect(() => {
@@ -92,7 +90,7 @@ const Game = ({ cartitem, cartfn }) => {
     //console.log(gameData);
     fetchGameData();
     fetchCommentData()
-    if (profileData.library.find(game => game.id == gameId))
+    if (profileData.library && profileData.library.find(game => game.id == gameId))
       setPurchase(true)
 
   }, []);
@@ -320,7 +318,8 @@ const Game = ({ cartitem, cartfn }) => {
             </label>
             <textarea
               className="form-control"
-              id="exampleFormControlTextarea1"
+              id="comment-text"
+              name="comment-text"
               rows="3"
             ></textarea>
             <ToggleButtonGroup
@@ -345,7 +344,7 @@ const Game = ({ cartitem, cartfn }) => {
           <div className="comments">
 
             <div className="custdetail">
-              <h3 style={{ color: 'blue' }}>{comment.name}</h3>
+              <h3 style={{ color: 'blue' }}>{comment.uname}</h3>
               <div className="cust-rating">
                 <div style={{ display: 'flex', flexDirection: 'row' }}><h2>Not Recommended</h2><SentimentVeryDissatisfiedIcon sx={{ color: 'red' }} fontSize="large" /></div>
                 <text>Total Hours: {comment.hours}h</text>
