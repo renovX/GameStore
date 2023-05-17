@@ -9,6 +9,7 @@ const commentController = {
         console.log('adding comm')
         const { gameName, profileId, commdata, rate } = req.body;
         try {
+            //finding whether comment collection for game is present
             const commentdoc = await Comments.findOne({ gameId: gameId })
             const { userName, libraryGames } = await Profile.findById(new mongoose.Types.ObjectId(profileId))
             const x = libraryGames.find(game => game.id == gameId)
@@ -17,15 +18,23 @@ const commentController = {
                 hours = x.hours
             const newcomment = { profileId: profileId, uname: userName, rate: rate, hours: hours, data: commdata }
             if (commentdoc) {
-                commentdoc.comments.push(newcomment)
+                //searching for old posted user comment
+                const ucomment = commentdoc.comments.findIndex(c => (c.uname == userName))
+                if (ucomment > -1)
+                    commentdoc.comments[ucomment] = newcomment
+                else
+                    commentdoc.comments.push(newcomment)
                 commentdoc.save();
             }
             else {
+                //if not, create new collection
                 await Comments.create({ gameId: gameId, gameName: gameName, comments: [newcomment,], rating: 0 })
 
             }
-            res.send("OK");
-            console.log("added");
+            console.log(newcomment)
+            res.send("Comment Add Success");
+            console.log("comment added");
+
         } catch (e) {
             res.send("Failed" + e);
         }

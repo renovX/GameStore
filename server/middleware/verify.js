@@ -21,7 +21,6 @@ export default function verify(req, res, next) {
       res.sendStatus(403);
     } else {
       console.log('Correct Token')
-      //res.send("Authorized");
       next();
     }
   });

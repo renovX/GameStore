@@ -18,20 +18,22 @@ function cookieParser(cookieString) {
 }
 const profileController = {
   getData: async (req, res) => {
-    //console.log(req.cookies);
+
     try {
-      //if (req.cookies.token) {
-      res.setHeader("Access-Control-Allow", true);
-      console.log(req.headers[0])
-      const tokenData = JSON.parse(atob(req.cookies.token.split(".")[1]));
+
+      //res.setHeader("Access-Control-Allow", true);
+      const token = req.headers.authorization.split(' ')[1]
+      const tokenData = JSON.parse(atob(token.split(".")[1]));
       const profile = await Profile.findOne({ email: tokenData.email });
-      res.send(profile);
-      //res.send("Hi");
-      console.log("Data sent succesfully");
-      //} else {
-      // console.log("Failed to fetch profile data: UnAuthorized");
-      //res.sendStatus(401);
-      //}
+      if (profile) {
+        res.send(profile);
+        //res.send("Hi");
+        console.log("Data sent succesfully");
+
+      } else {
+        console.log("Failed to fetch profile data: UnAuthorized");
+        res.sendStatus(401);
+      }
 
     } catch (e) {
       console.log(e);
