@@ -17,15 +17,19 @@ function createToken(profile) {
 const authController = {
   register: async (req, res) => {
     try {
-      const { name, email, phone, password } = req.body;
-      if (!(name, email, phone, password)) return res.send("Enter all details");
+      const { userName, firstName, lastName, email, phone, password } = req.body;
+      if (!(userName, firstName, lastName, email, phone, password)) return res.send("Enter all details");
       const encrypted_pass = await bcrypt.hash(password, 10);
-      const acc = await Profile.findOne({ email: email });
+      const acc = await Profile.findOne({ $or: [{ email: email }, { userName: userName }] });
       if (acc) {
+        console.log(acc)
         return res.send("Account Exists");
+
       }
       const newProfile = await Profile.create({
-        name: name,
+        userName: userName,
+        firstName: firstName,
+        lastName: lastName,
         email: email,
         phoneNumber: phone,
         password: encrypted_pass,
@@ -33,7 +37,10 @@ const authController = {
         address: ["", "", "", "", ""],
         libraryGames: [],
       });
-      if (newProfile) res.send(newProfile);
+      if (newProfile) {
+        res.send(newProfile);
+        console.log('Account Creation Success')
+      }
       else res.status(500).send("Error");
     } catch (e) {
       res.status(500).send(e.message);
@@ -43,15 +50,11 @@ const authController = {
 
   logIn: async (req, res) => {
     //if (req.session.isAuth) return res.send("Already Logged In");
-    const { email, password } = req.body;
-    if (!(email && password))
-      return res.status(401).send("Provide both email and password");
-    /*const encrypted_pass = await bcrypt.hash(password, 10);
-    await Profile.findOneAndUpdate(
-      { email: email },
-      { password: encrypted_pass }
-    );*/
-    const profile = await Profile.findOne({ email: email });
+    const { emus, password } = req.body;
+    if (!(emus && password))
+      return res.status(401).send("Provide both email/username and password");
+
+    const profile = await Profile.findOne({ $or: [{ email: emus }, { userName: emus }] })
     if (profile && (await bcrypt.compare(password, profile.password))) {
       //valid email and password
       console.log("Success");

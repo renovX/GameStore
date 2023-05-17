@@ -1,8 +1,18 @@
 import mongoose from "mongoose";
 const profileSchema = mongoose.Schema({
-  name: {
+  userName:
+  {
     type: String,
-    required: [true, "name is required"],
+    required: [true, "username is required"],
+    unique: true,
+  },
+  firstName: {
+    type: String,
+    required: [true, "first name is required"],
+  },
+  lastName: {
+    type: String,
+    required: [true, "last name is required"],
   },
   phoneNumber: {
     type: Number,

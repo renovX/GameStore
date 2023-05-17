@@ -68,16 +68,16 @@ const profileController = {
       const cartItems = profile.cart;
 
       console.log(cartItems);
-      const gameList = await Promise.all(
-        cartItems.map(async (item) => {
-          var id = mongoose.Types.ObjectId(item.id);
-          return await Game.findById(id);
-        })
-      );
-      console.log(cartItems);
-      console.log(gameList);
+      // const gameList = await Promise.all(
+      //   cartItems.map(async (item) => {
+      //     var id = mongoose.Types.ObjectId(item.id);
+      //     return await Game.findById(id);
+      //   })
+      // );
+      // console.log(cartItems);
+      // console.log(gameList);
 
-      const library = profile.libraryGames.concat(gameList);
+      const library = profile.libraryGames.concat(cartItems);
       await Profile.findOneAndUpdate(
         { email: email },
         { libraryGames: library, cart: [] }

@@ -7,6 +7,7 @@ import profileRouter from "./routes/profile.js";
 import authRouter from "./routes/auth.js";
 import cookieParser from "cookie-parser";
 import verify from "./middleware/verify.js";
+import commentRouter from "./routes/comments.js";
 dotenv.config();
 //import payRouter from "./routes/payment.js";
 import stripeRouter from "./routes/stripe.js";
@@ -31,6 +32,7 @@ app.use(bodyParser.json());
 app.use("/game", gameRouter);
 app.use("/profile", profileRouter);
 app.use("/stripe", stripeRouter);
+app.use('/comment', commentRouter)
 app.use("/auth", authRouter);
 const PORT = process.env.PORT || 8000;
 try {
