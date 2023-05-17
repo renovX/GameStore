@@ -43,6 +43,7 @@ const theme = createTheme();
 export default function SignIn() {
   const setUserProfile = (data) => {
     setProfile({
+      id: data.id,
       loggedIn: true,
       firstName: data.firstName,
       lastName: data.lastName,

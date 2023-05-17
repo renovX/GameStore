@@ -5,13 +5,19 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { LoginContext } from "../Context/LoginContext";
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { ToggleButton, ToggleButtonGroup, Box } from "@mui/material";
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
+import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
 import axios from "axios";
 //import "../../images/img1.jpeg";
 const capitalize = (str) => (str.charAt(0).toUpperCase() + str.slice(1))
+const CommentRate = ({ rate }) => {
+  return rate ?
+    (<div style={{ display: 'flex', flexDirection: 'row' }}><h2>Recommended</h2><SentimentVerySatisfiedIcon sx={{ color: 'green' }} fontSize="large" /></div>) : (<div style={{ display: 'flex', flexDirection: 'row' }}><h2>Not Recommended</h2><SentimentVeryDissatisfiedIcon sx={{ color: 'red' }} fontSize="large" /></div>
+    )
+}
 function parseReq(str) {
   //removing unnecessary
   //str = str.minimum
@@ -37,6 +43,7 @@ const Game = ({ cartitem, cartfn }) => {
   const [commData, setCommData] = useState([])
   const [purchased, setPurchase] = useState(false)
   const [commStatus, setCommStatus] = useState(true)
+  const [userComm, setUserComm] = useState('')
   const addToCart = (item) => {
     const p = profileData;
     const cart = profileData.cart;
@@ -46,14 +53,14 @@ const Game = ({ cartitem, cartfn }) => {
     setProfile(p);
   };
   let navigate = useNavigate();
-  const routeChange = () => {
-    let path = `/profile/cart/ac`;
-    navigate(path);
-  };
-  const handleForm = (event) => {
+
+  const handleForm = async (event) => {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
-    console.log(formData.get('comment-text'))
+    const rate = commStatus
+    await axios.post(`http://localhost:${process.env.REACT_APP_BACKEND_PORT}/comment/add-comment/${gameId}`, { gameName: gameData.name, profileId: profileData.id, commdata: formData.get("comment-text"), rate: rate })
+
+
 
   }
   useEffect(() => {
@@ -83,9 +90,17 @@ const Game = ({ cartitem, cartfn }) => {
 
     }
     async function fetchCommentData() {
-      const commentData = (await axios.get(`http://localhost:${process.env.REACT_APP_BACKEND_PORT}/comment/get-comments/${gameId}`)).data
+      let commentData = (await axios.get(`http://localhost:${process.env.REACT_APP_BACKEND_PORT}/comment/get-comments/${gameId}`)).data
+      const user_comment = commentData.find(c => (String(c.uname) === String(profileData.userName)))
+      console.log('c:' + user_comment)
+      if (user_comment) {
+
+        setUserComm(user_comment.data)
+        setCommStatus(user_comment.rate)
+        commentData = commentData.filter(c => c != user_comment)
+      }
       setCommData(commentData)
-      console.log(commentData)
+
     }
     //console.log(gameData);
     fetchGameData();
@@ -190,7 +205,7 @@ const Game = ({ cartitem, cartfn }) => {
               <div className="priceval">
                 <strong>Price:{gameData.price}</strong>
               </div>
-              {profileData.name != "" ? (
+              {profileData.loggedIn ? (
 
                 <button
                   type="button"
@@ -311,7 +326,10 @@ const Game = ({ cartitem, cartfn }) => {
         <div>
           <h2>Customer Review</h2>
         </div>
-        <form onSubmit={handleForm}>
+        {profileData.loggedIn ? (<Box
+          component="form"
+          noValidate
+          onSubmit={handleForm}>
           <div className="mb-3">
             <label htmlFor="exampleFormControlTextarea1" className="form-label">
               Add Your Review
@@ -320,6 +338,7 @@ const Game = ({ cartitem, cartfn }) => {
               className="form-control"
               id="comment-text"
               name="comment-text"
+              defaultValue={userComm}
               rows="3"
             ></textarea>
             <ToggleButtonGroup
@@ -339,19 +358,19 @@ const Game = ({ cartitem, cartfn }) => {
           <button type="submit" className="btn btn-primary" style={{ marginBottom: '3%' }}>
             Submit
           </button>
-        </form>
+        </Box>) : <></>}
         {commData ? commData.map(comment => (
           <div className="comments">
 
             <div className="custdetail">
               <h3 style={{ color: 'blue' }}>{comment.uname}</h3>
               <div className="cust-rating">
-                <div style={{ display: 'flex', flexDirection: 'row' }}><h2>Not Recommended</h2><SentimentVeryDissatisfiedIcon sx={{ color: 'red' }} fontSize="large" /></div>
+                <CommentRate rate={comment.rate} />
                 <text>Total Hours: {comment.hours}h</text>
               </div>
             </div>
             <p style={{ color: 'black' }}>{comment.data}
-            </p></div>)) : (<></>)}
+            </p></div>)) : (<p style={{ color: 'black' }}>No Comments Posted</p>)}
       </div>
     </div>
   );

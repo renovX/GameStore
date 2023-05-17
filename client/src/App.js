@@ -19,7 +19,6 @@ import { DrawerContext } from "./Context/DrawerContext";
 import Register from "./components/Auth/Register";
 import Redirect from "./page/Redirect";
 import Cookies from "js-cookie";
-import { Switch } from "@mui/material";
 import axios from "axios";
 
 function App() {
@@ -27,6 +26,7 @@ function App() {
   const [cartItems, setCartItem] = useState([]);
 
   const [profileData, setProfile] = useState({
+    id: '',
     loggedIn: false,
     userName: "",
     firstName: "",
@@ -41,18 +41,20 @@ function App() {
   const [drawer, setDrawer] = useState(false);
   useEffect(() => {
     async function fetchData() {
+      const token = Cookies.get('token')
+
+
       const res = await axios.get(
         `http://localhost:${process.env.REACT_APP_BACKEND_PORT}/profile/get-data`,
-        {
-          withCredentials: true,
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (res) {
         setProfile({
           loggedIn: true,
+          id: res.data._id,
           userName: res.data.userName,
           firstName: res.data.firstName,
-          firstName: res.data.lastName,
+          lastName: res.data.lastName,
           phone: res.data.phoneNumber,
           email: res.data.email,
           password: "",
