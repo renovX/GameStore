@@ -10,12 +10,12 @@ const commentController = {
         const { gameName, profileId, commdata, rate } = req.body;
         try {
             const commentdoc = await Comments.findOne({ gameId: gameId })
-            const { name, libraryGames } = await Profile.findById(new mongoose.Types.ObjectId(profileId))
+            const { userName, libraryGames } = await Profile.findById(new mongoose.Types.ObjectId(profileId))
             const x = libraryGames.find(game => game.id == gameId)
             let hours = 0
             if (x)
                 hours = x.hours
-            const newcomment = { profileId: profileId, name: name, rate: rate, hours: hours, data: commdata }
+            const newcomment = { profileId: profileId, uname: userName, rate: rate, hours: hours, data: commdata }
             if (commentdoc) {
                 commentdoc.comments.push(newcomment)
                 commentdoc.save();

@@ -91,16 +91,28 @@ const profileController = {
   },
   update: async (req, res) => {
     try {
-      const { name, email, password, phone, addr } = req.body;
-      console.log(password);
-      const encrypted_pass = await bcrypt.hash(password, 10);
+      const { firstName, lastName, phone, addr } = req.body;
+      //console.log(password);
+      let newData = { firstName: firstName, lastName: lastName, phoneNumber: phone, address: addr }
+      if (req.body.password) {
+
+        const encrypted_pass = await bcrypt.hash(password, 10);
+        newData.password = encrypted_pass
+      }
+      const email = req.body.email
       const profile = await Profile.findOneAndUpdate(
         { email: email },
-        { name: name, password: encrypted_pass, phone: phone, address: addr }
+        newData
       );
+      //res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
+      //res.setHeader('Access-Control-Allow-Credentials', 'true')
+      console.log(req.body)
+      console.log('Profile Update Success')
       res.send(profile);
+
     } catch (e) {
       res.send(e.message);
+      console.log(e)
     }
   },
 };
