@@ -100,7 +100,7 @@ function App() {
                 <Route path="account" element={<Account />} />
                 <Route path="library" element={<Library />} />
               </Route>
-              <Route path='profiles' element={<UserProfile />}></Route>
+              <Route path='profiles/:username' element={<UserProfile />}></Route>
               <Route path="auth/signin" element={<SignIn />} />
               <Route path="auth/register" element={<Register />} />
               <Route path="*" element={<Page404 />} />

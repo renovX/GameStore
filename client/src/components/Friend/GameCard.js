@@ -1,21 +1,20 @@
 import * as React from 'react';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import { useNavigate } from 'react-router';
 
-export default function GameCard() {
+
+export default function GameCard({ gameImg, hours, id }) {
+    const navigate = useNavigate()
     return (
-        <Card sx={{ width: '70%', marginBottom: '2%' }}>
+        <Card sx={{ width: '70%', marginBottom: '2%' }} onClick={() => { navigate(`/game/${id}`) }}>
             <CardMedia
                 component="img"
                 alt="green iguana"
                 height="100%"
-                image="https://www.freepnglogos.com/uploads/gta-5-logo-png/grand-theft-auto-v-1.png"
+                image={gameImg}
             />
-            <span style={{ fontSize: '80%' }}>1000 hrs</span>
+            <span style={{ fontSize: '80%' }}>{hours} hrs</span>
 
         </Card>
     );

@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { LoginContext } from "../Context/LoginContext";
-import { ToggleButton, ToggleButtonGroup, Box } from "@mui/material";
+import { ToggleButton, ToggleButtonGroup, Box, Snackbar, Alert } from "@mui/material";
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
@@ -44,6 +44,7 @@ const Game = ({ cartitem, cartfn }) => {
   const [purchased, setPurchase] = useState(false)
   const [commStatus, setCommStatus] = useState(true)
   const [userComm, setUserComm] = useState('')
+  const [snakb, toggleSB] = useState(false)
   const addToCart = (item) => {
     const p = profileData;
     const cart = profileData.cart;
@@ -59,7 +60,7 @@ const Game = ({ cartitem, cartfn }) => {
     const formData = new FormData(event.currentTarget)
     const rate = commStatus
     await axios.post(`http://localhost:${process.env.REACT_APP_BACKEND_PORT}/comment/add-comment/${gameId}`, { gameName: gameData.name, profileId: profileData.id, commdata: formData.get("comment-text"), rate: rate })
-
+    toggleSB(true)
 
 
   }
@@ -372,6 +373,15 @@ const Game = ({ cartitem, cartfn }) => {
             <p style={{ color: 'black' }}>{comment.data}
             </p></div>)) : (<p style={{ color: 'black' }}>No Comments Posted</p>)}
       </div>
+      <Snackbar
+        open={snakb}
+        autoHideDuration={6000}
+        onClose={() => { toggleSB(false) }}
+        message="Note archived"
+
+      ><Alert onClose={() => { toggleSB(false) }} severity="success" sx={{ width: '100%' }}>
+          Added Comment
+        </Alert></Snackbar>
     </div>
   );
 };
