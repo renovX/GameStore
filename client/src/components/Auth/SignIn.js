@@ -61,6 +61,7 @@ export default function SignIn() {
       phone: data.phoneNumber,
       email: data.email,
       password: "",
+      friendList: data.friendList,
       addr: data.address,
       cart: data.cart,
       library: data.libraryGames,

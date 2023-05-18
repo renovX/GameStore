@@ -1,15 +1,30 @@
 .cart_title {
   margin-top: 0;
   background-color: aqua;
+
 }
-div.cart_title > h1 {
+
+div.cart_title>h1 {
   color: black;
 }
+
 .gprice {
   position: absolute;
   right: 7%;
 }
+
 .totalPrice {
   position: absolute;
   right: 5%;
+}
+
+.friend-list {
+  background-color: gray;
+  width: 50%;
+  max-width: 50%;
+
+}
+
+.flist-item {
+  padding: 4%;
 }

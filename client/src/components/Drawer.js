@@ -1,22 +1,33 @@
 import * as React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
+
+import {
+  List,
+  ListItem,
+  Collapse,
+  Drawer,
+  Button,
+  Box,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  IconButton,
+  Tooltip,
+  Icon,
+
+}
+  from "@mui/material";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
+import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import SettingsIcon from "@mui/icons-material/Settings";
 import Diversity1Icon from "@mui/icons-material/Diversity1";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LogintIcon from "@mui/icons-material/Login";
 import CreateIcon from "@mui/icons-material/Create";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Cookies from "js-cookie";
 import { DrawerContext } from "../Context/DrawerContext";
 import { LoginContext } from "../Context/LoginContext";
@@ -38,6 +49,7 @@ export default function TemporaryDrawer() {
     bottom: false,
     right: false,
   });
+  const [flist, setFL] = React.useState(false)
   const [loginState, setLogin] = React.useState(false);
   const navigate = useNavigate();
   const toggleDrawer = (anchor) => (event) => {
@@ -81,24 +93,52 @@ export default function TemporaryDrawer() {
         <List>
           {[
             { text: "Account", nav: "/profile/account" },
-            { text: "Friends", nav: "/profile/account" },
+            { text: "Friends", nav: "" },
             { text: "Library", nav: "/profile/library" },
             { text: "Cart", nav: "/profile/cart/k" },
             { text: "Setting", nav: "/profile/account" },
-          ].map(({ text, nav }, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton
-                onClick={() => {
-                  setState({ ...state, [anchor]: false });
-                  navigate(nav);
-                  toggleDrawer(anchor);
-                }}
-              >
-                <ListItemIcon>{iconArray[index]}</ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+          ].map(({ text, nav }, index) => {
+            if (text == 'Friends')
+              return (<>
+                <ListItemButton onClick={() => { setFL(!flist) }}>
+                  <ListItemIcon>
+                    <Diversity1Icon />
+                  </ListItemIcon>
+                  <ListItemText primary="Friends" />
+                </ListItemButton>
+                <Collapse in={flist} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    {profileData.friendList ? profileData.friendList.map(uname => (
+                      <Tooltip title="Add" placement="left" arrow>
+                        <ListItem sx={{ pl: 4, backgroundColor: 'rgb(54, 55, 56)' }}>
+                          <ListItemIcon>
+                            <AccountCircleIcon />
+                          </ListItemIcon>
+                          <ListItemText primary={uname} sx={{ color: 'white' }} />
+                          <IconButton>
+                            <ChatBubbleOutlineOutlinedIcon />
+                          </IconButton>
+                        </ListItem></Tooltip>)) : <></>}
+                  </List>
+                </Collapse>
+              </>
+              )
+            else
+              return (
+                <ListItem key={text} disablePadding>
+                  <ListItemButton
+                    onClick={() => {
+                      setState({ ...state, [anchor]: false });
+                      navigate(nav);
+                      toggleDrawer(anchor);
+                    }}
+                  >
+                    <ListItemIcon>{iconArray[index]}</ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItemButton>
+                </ListItem>
+              )
+          })}
           <ListItem key="Logout" disablePadding>
             <ListItemButton onClick={handleLogout}>
               <ListItemIcon>
@@ -112,10 +152,7 @@ export default function TemporaryDrawer() {
         <List>
           <ListItem disablePadding>
             <ListItemButton
-              onClick={
-                //setLogin(true);
-                handleLogin
-              }
+              onClick={handleLogin}
             >
               <ListItemIcon>
                 <LogintIcon />

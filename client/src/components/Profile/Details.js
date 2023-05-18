@@ -1,10 +1,8 @@
 import React from "react";
 import Cookies from "js-cookie";
 import "./Profile.css";
-import { Routes, Route, useNavigate, Form } from "react-router-dom";
-import { Paper, Snackbar, Alert } from "@mui/material";
-import { useRef } from "react";
-import { useState, useEffect, useContext } from "react";
+import { Paper } from "@mui/material";
+import { useState } from "react";
 
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -25,21 +23,15 @@ import {
 } from "@mui/material";
 
 import axios from "axios";
-import { LoginContext } from "../../Context/LoginContext";
 
-const Details = () => {
+const Details = ({ snkbar, toggleSB, profileData }) => {
     //const firstNameRef = useRef(null);
-
-    const { profileData } = useContext(LoginContext);
     const [visible1, setVisiblity1] = useState(false);
     const [visible2, setVisiblity2] = useState(false);
     //const [passval, setPassVal] = useState("password");
     const [password, setPassword] = useState("")
     const [confirmpass, setConfirmPass] = useState("");
     const [passwordChanged, setPassChanged] = useState(false);
-    const [snakb, toggleSB] = useState(false)
-    const style = { bgcolor: "black" };
-    let navigate = useNavigate();
     const handleSubmit = async (event) => {
         event.preventDefault()
         if (passwordChanged && password != confirmpass)

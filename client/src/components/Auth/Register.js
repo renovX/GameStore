@@ -110,6 +110,7 @@ export default function Register() {
         userName: resp.data.userName,
         phone: resp.data.phone,
         email: resp.data.email,
+        friendList: resp.data.friendList,
         password: resp.data.password,
         addr: resp.data.addr,
       });

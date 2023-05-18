@@ -36,6 +36,7 @@ function App() {
     email: "",
     password: "",
     addr: ["", "", "", "", ""],
+    friendList: [],
     cart: [],
     library: [],
   });
@@ -60,6 +61,7 @@ function App() {
           email: res.data.email,
           password: "",
           addr: res.data.address,
+          friendList: res.data.friendList,
           cart: res.data.cart,
           library: res.data.libraryGames,
         });
