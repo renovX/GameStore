@@ -1,0 +1,86 @@
+/*@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400&display=swap');*/
+@import url('https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&family=Rajdhani:wght@300&display=swap');
+
+
+
+.main-box {
+    display: flex;
+    flex-direction: row;
+    padding: 2%;
+    height: '100%';
+}
+
+.account-name {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid black;
+}
+
+.ac-text {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 60px;
+    margin-top: 3%;
+    margin-left: 4%;
+}
+
+.recent-comments {
+    padding: 1%;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+}
+
+.online {
+    margin-left: 1px;
+    margin-top: -1px;
+}
+
+.acbx {
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 100%;
+    padding: 2%;
+}
+
+.games-head {
+    font-family: 'Bruno Ace SC', cursive;
+}
+
+.box2 {
+    height: 400px;
+}
+
+.user-msg {
+    padding: 1%;
+    padding-right: 3%;
+    min-width: 30%;
+    max-width: 70%;
+    text-align: end;
+    height: max-content;
+    align-self: flex-start;
+    background-color: rgb(174, 179, 106);
+    border: solid green 1px;
+    margin-top: 1%;
+}
+
+.friend-msg {
+    padding: 1%;
+    padding-left: 3%;
+    min-width: 30%;
+    max-width: 70%;
+    height: max-content;
+    align-self: flex-end;
+    background-color: rgb(87, 160, 215);
+    border: solid black 1px;
+    margin-top: 1%;
+}
+
+.chat-box {
+    border: 1px solid black;
+    height: 600px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}

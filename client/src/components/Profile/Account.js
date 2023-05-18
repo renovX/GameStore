@@ -61,7 +61,7 @@ const Account = () => {
     if (password != "") updatedProfile.password = password
 
     const token = Cookies.get('token')
-    //console.log(token)
+    console.log(updatedProfile)
     const url = `http://localhost:${process.env.REACT_APP_BACKEND_PORT}/profile/update`;
     try {
       const resp = await axios.post(url, updatedProfile, { headers: { Authorization: `Bearer ${token}` } });
@@ -71,10 +71,7 @@ const Account = () => {
       console.log(e);
     }
   };
-  const routeChange = () => {
-    let path = `/profile/cart/ac`;
-    navigate(path);
-  };
+
   const PasswordField = ({ type }) => {
     if (type == "pass")
       return (
@@ -91,7 +88,7 @@ const Account = () => {
             type={visible1 ? "" : "password"}
             variant="outlined"
             sx={{ width: "100%", ml: "0" }}
-            defaultValue={password}
+            value={password}
             onClick={() => { setPassChanged(true) }}
             onChange={(e) => {
               setPassword(e.target.value)
@@ -122,7 +119,7 @@ const Account = () => {
             type={visible2 ? "" : "password"}
             variant="outlined"
             sx={{ width: "100%", ml: "0" }}
-            defaultValue={confirmpass}
+            value={confirmpass}
             onChange={(e) => {
               setConfirmPass(e.target.value);
             }}
@@ -377,7 +374,7 @@ const Account = () => {
             aria-controls="panel2a-content"
             id="panel2a-header"
             onClick={() => {
-              routeChange();
+              navigate('/profile/cart/ac');
             }}
           >
             <Typography>Cart</Typography>
@@ -389,7 +386,7 @@ const Account = () => {
             aria-controls="panel2a-content"
             id="panel2a-header"
             onClick={() => {
-              routeChange();
+              navigate('/profile/library')
             }}
           >
             <Typography>Library</Typography>

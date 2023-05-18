@@ -1,18 +1,23 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Link,
+  Grid,
+  Box,
+  Alert,
+  Typography,
+  Container,
+  Backdrop,
+  CircularProgress
+} from "@mui/material";
+
 import { useState } from "react";
-import Alert from "@mui/material/Alert";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router";
 import axios from "axios";
@@ -54,6 +59,7 @@ export default function Register() {
   const [passVal, setPasVal] = useState("");
   const [passVal2, setPasVal2] = useState("");
   const [errorMessage, setMessage] = useState(true);
+  const [bdstate, setBDState] = useState(false)
   const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -85,27 +91,34 @@ export default function Register() {
       setMessage("Fill all the details!");
       return;
     }
+    setBDState(true)
+    try {
+      const url = `http://localhost:${process.env.REACT_APP_BACKEND_PORT}/auth/register`;
+      const resp = await axios.post(url, dform);
+      setBDState(false)
+      if (resp.data == "Account Exists") {
+        setError(true);
 
-    const url = `http://localhost:${process.env.REACT_APP_BACKEND_PORT}/auth/register`;
-    const resp = await axios.post(url, dform);
-    if (resp.data == "Account Exists") {
-      setError(true);
+        setMessage("User is already registered with same username or email");
+        return;
+      }
 
-      setMessage("User is already registered with same username or email");
-      return;
+      setProfile({
+        loggedIn: true,
+        firstName: resp.data.firstName,
+        lastName: resp.data.lastName,
+        userName: resp.data.userName,
+        phone: resp.data.phone,
+        email: resp.data.email,
+        password: resp.data.password,
+        addr: resp.data.addr,
+      });
+      navigate("/redirect");
     }
-
-    setProfile({
-      loggedIn: true,
-      firstName: resp.data.firstName,
-      lastName: resp.data.lastName,
-      userName: resp.data.userName,
-      phone: resp.data.phone,
-      email: resp.data.email,
-      password: resp.data.password,
-      addr: resp.data.addr,
-    });
-    navigate("/redirect");
+    catch (e) {
+      console.log(e)
+      setBDState(false)
+    }
   };
   const handleChange = (event) => {
     setPasVal(event.target.value);
@@ -115,6 +128,12 @@ export default function Register() {
   };
   return (
     <ThemeProvider theme={theme}>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={bdstate}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box

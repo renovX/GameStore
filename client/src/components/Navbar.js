@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import TemporaryDrawer from "./Drawer";
 import "./Navbar.css";
-import Profile from "./Profile";
 import { Outlet, useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 
 function Navbar() {
+
   return (
     <>
       <div className="nav-wrapper">
@@ -21,8 +21,8 @@ function Navbar() {
             <span className="bar"></span>
           </div>
           <ul className="nav no-search">
-            <li className="nav-item">
-              <Link to="/" style={{ color: "white" }}>
+            <li className="nav-item" >
+              <Link to="/" style={{ color: "white" }} >
                 Home
               </Link>
             </li>

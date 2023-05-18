@@ -1,17 +1,27 @@
 import * as React from "react";
 import { googleLogout, useGoogleLogin } from "@react-oauth/google";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
+
+import {
+  CssBaseline,
+  TextField,
+  Checkbox,
+  Link,
+  Grid,
+  Box,
+  Typography,
+  Container,
+  Avatar,
+  Button,
+  Alert,
+  AlertTitle,
+  FormControlLabel,
+  CircularProgress,
+  Backdrop
+}
+  from "@mui/material"
+
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
+
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import { useState, useContext } from "react";
@@ -76,8 +86,11 @@ export default function SignIn() {
   const { setDrawer } = useContext(DrawerContext);
   const navigate = useNavigate();
   const { setProfile } = useContext(LoginContext);
+  const [alertStatus, setAlert] = useState(false)
+  const [bdstate, setBDState] = useState(false)
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setBDState(true)
     const data = new FormData(event.currentTarget);
     const url = `http://localhost:${process.env.REACT_APP_BACKEND_PORT}/auth/login`;
     //alert(url);
@@ -86,8 +99,9 @@ export default function SignIn() {
       const res = await axios.post(url, {
         emus: data.get("email"),
         password: data.get("password"),
-      });
 
+      });
+      setBDState(false)
       if (res) {
         //console.log(res);
         setUserProfile(res.data);
@@ -102,12 +116,24 @@ export default function SignIn() {
       //console.log(res.data);
     } catch (e) {
       console.log(e);
+      setBDState(false)
+      setAlert(true)
     }
   };
 
   return (
     <ThemeProvider theme={theme}>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={bdstate}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Container component="main" maxWidth="xs">
+        {alertStatus ? (<Alert sx={{ marginTop: "2%" }} severity="error">
+          <AlertTitle>LOGIN FAIL</AlertTitle>
+          Invalid username/email or password
+        </Alert>) : <></>}
         <CssBaseline />
         <Box
           sx={{

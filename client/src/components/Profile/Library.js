@@ -52,16 +52,6 @@ const GameCard = ({ name, img }) => {
 const Library = () => {
   const { profileData } = useContext(LoginContext);
   const [gameArray, setgameArray] = useState(profileData.library);
-  //console.log(gameArray[0].name);
-  /*useEffect(async ()=>
-    {
-        const res = await (
-          await fetch(`http://localhost:8000/profile/library/${userId}`)
-        ).json();
-        setgameArray(res)
-    })*/
-  //let X = [...Array(5).keys()];
-  //const arr = [...Array(5).keys()];
   return (
     <Container fixed>
       <h1 style={{ color: "black" }}>All Games</h1>

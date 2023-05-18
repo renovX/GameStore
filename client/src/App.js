@@ -11,6 +11,7 @@ import Landing from "./Landing";
 import Game from "./components/Game";
 import Cart from "./components/Profile/Cart";
 import Account from "./components/Profile/Account";
+import UserProfile from './components/Friend/UserProfile'
 import { useState } from "react";
 import Library from "./components/Profile/Library";
 import SignIn from "./components/Auth/SignIn";
@@ -97,7 +98,7 @@ function App() {
                 <Route path="account" element={<Account />} />
                 <Route path="library" element={<Library />} />
               </Route>
-
+              <Route path='profiles' element={<UserProfile />}></Route>
               <Route path="auth/signin" element={<SignIn />} />
               <Route path="auth/register" element={<Register />} />
               <Route path="*" element={<Page404 />} />
