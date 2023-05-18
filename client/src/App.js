@@ -92,11 +92,11 @@ function App() {
                 path="game/:gameId"
                 element={<Game cartitem={cartItems} cartfn={setCartItem} />}
               />
+              <Route
+                path="profile/cart/:payStatus"
+                element={<Cart cartitem={cartItems} cartfn={setCartItem} />}
+              />
               <Route path='profile' element={<PrivateRoutes isLogged={profileData.loggedIn} />}>
-                <Route
-                  path="cart/:payStatus"
-                  element={<Cart cartitem={cartItems} cartfn={setCartItem} />}
-                />
                 <Route path="account" element={<Account />} />
                 <Route path="library" element={<Library />} />
               </Route>

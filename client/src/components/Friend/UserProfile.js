@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import axios from 'axios'
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import ImgMediaCard from "./ImgCard";
 import ChatRoom from "./Chat";
@@ -9,10 +10,11 @@ import { IconButton, Grid, Dialog, DialogContent, DialogActions, Button } from "
 import './Friend.css'
 import { Container, Box, Typography } from "@mui/material";
 const socket = io.connect('http://localhost:4000'); //
-export default function UserProfile() {
-    const username = 'trg'
-    const room = 'r1';
+export default function UserProfile({ username }) {
+    const [libraryGames, setLGames] = useState([])
+    const [recentComments, setComments] = useState([])
     const [open, setOpen] = useState(false)
+    const room = 'r1'
     const handleChat = () => {
         setOpen(true)
         //join room
@@ -25,7 +27,15 @@ export default function UserProfile() {
         socket.emit('leave_room', { username, room, __createdtime__ });
         setOpen(false);
     };
+    useEffect(() => {
+        async function fetchUserData() {
+            const res = await axios.get(`http://localhost:8000/profile/${username}`)
+            setLGames(res.data.libraryGames)
+            const games = res.data.libraryGames
+            //finding comments;
 
+        }
+    }, [])
     return (
         <div><Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth={'sm'}>
 

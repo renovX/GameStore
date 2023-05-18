@@ -2,7 +2,7 @@ import React from "react";
 import "./Profile.css";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import Paper from "@mui/material/Paper";
+import Cookies from "js-cookie";
 import axios from "axios";
 import {
   Card,
@@ -27,18 +27,15 @@ import { LoginContext } from "../../Context/LoginContext";
 import { DrawerContext } from "../../Context/DrawerContext";
 const Cart = () => {
   async function fetchData() {
+    const token = Cookies.get('token')
     await axios.get(
-      `http://localhost:${process.env.REACT_APP_BACKEND_PORT}/profile/add-to-library`,
-      {
-        withCredentials: true,
-      }
+      `http://localhost:${process.env.REACT_APP_BACKEND_PORT}/profile/add-to-library`, { headers: { Authorization: `Bearer ${token}` } }
+
     );
 
     const res = await axios.get(
       `http://localhost:${process.env.REACT_APP_BACKEND_PORT}/profile/get-data`,
-      {
-        withCredentials: true,
-      }
+      { headers: { Authorization: `Bearer ${token}` } }
     );
     if (res) {
       setProfile({
