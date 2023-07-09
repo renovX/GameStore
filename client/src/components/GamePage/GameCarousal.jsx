@@ -50,12 +50,7 @@ export default function GameCarousal(props) {
       </div>
 
       <div className="infotable">
-        <table className="table table-success table-striped-columns">
-          <thead>
-            <tr>
-              <th colSpan={2}>{gameData.name}</th>
-            </tr>
-          </thead>
+        <table className="table table-striped-columns itable">
           <tbody>
             <tr>
               <td>Developer</td>

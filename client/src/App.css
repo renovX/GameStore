@@ -60,71 +60,9 @@ a:active {
   }
 }
 
-.gameHeading {
-  background-color: blue;
-  padding: 2%;
-}
 
-.gameDetails {
-  padding: 50px;
-
-  margin-left: 300px;
-  margin-right: 300px;
-
-  text-align: center;
-}
-
-.pricing {
-  margin-top: 50px;
-  margin-left: 300px;
-  margin-right: 300px;
-  padding-left: 300px;
-  padding-right: 300px;
-}
 
 .fixedimage {
   width: 100%;
   height: 100%;
-}
-
-.gamePage {
-  display: flex;
-  flex-direction: column;
-}
-
-.p2 {
-  background: grey;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-
-.priceval {
-  margin-top: 7px;
-  width: 150px;
-  padding-left: 0;
-}
-
-.review {
-  margin-top: 50px;
-  margin-left: 250px;
-  margin-right: 250px;
-}
-
-.comments {
-  border: solid black 1px;
-  width: '100%';
-  padding: 1%;
-}
-
-.cust-rating {
-  display: flex;
-  flex-direction: column;
-  margin-left: 30%;
-}
-
-.custdetail {
-  display: flex;
-  flex-direction: row;
-  padding: 1%;
 }

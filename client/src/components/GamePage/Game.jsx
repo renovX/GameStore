@@ -1,15 +1,14 @@
 import React from "react";
 import "./GamePage.css"
 import GameCarousal from "./GameCarousal";
-import parse from 'html-react-parser';
+import GameDetails from "./GameDetails";
+import CustomerReview from "./CustomerReview";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
+import { Snackbar, Alert } from "@mui/material";
 import { LoginContext } from "../../Context/LoginContext";
-import { ToggleButton, ToggleButtonGroup, Box, Snackbar, Alert } from "@mui/material";
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
 import axios from "axios";
@@ -37,7 +36,11 @@ function parseReq(str) {
   return [os, processor, mem, gra, storage, sound]
 
 }
-
+function shortHand(str) {
+  if (!str) return ""
+  const ans = str.split(" ").map(s => s[0]).join('')
+  return ans
+}
 const Game = ({ cartitem, cartfn }) => {
   const { profileData, setProfile } = useContext(LoginContext);
   const { gameId } = useParams();
@@ -113,190 +116,56 @@ const Game = ({ cartitem, cartfn }) => {
 
   }, []);
 
-
   return (
     <div className="gamePage">
-      <div className="gameHeading">
-        <h2 className="text-center">{gameData.name}</h2>
-      </div>
+
+      <h2 className="gameHeading">{gameData.name}</h2>
       <GameCarousal gameData={gameData} />
 
       <div className="pricing">
-        <div className="card">
-          <div className="card-body">
-            <h2>Buy XYZW</h2>
 
-            <div className="p2">
-              <div className="priceval">
-                <strong>Price:{gameData.price}</strong>
-              </div>
-              {profileData.loggedIn ? (
+        <h2 className="buy-heading">Buy {shortHand(gameData.name)}</h2>
 
-                <button
-                  type="button"
-                  className="btn btn-outline-success"
-                  onClick={() => {
-                    const route = purchased ? '/profile/library' : '/profile/cart/ac'
-                    if (!purchased)
-                      addToCart({
-                        img: gameData.bgim,
-                        name: gameData.name,
-                        id: gameId,
-                        price: +gameData.price,
+        <div className="p2">
+          <div className="priceval">Price:{gameData.price}</div>
 
-                      });
-                    navigate(route)
-                  }}
-                >
-                  {purchased ? (<span>View In Library</span>) : <span>Add To Cart</span>}
-                </button>
-              ) : (
-                <></>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
+          {profileData.loggedIn ? (
 
-      <div className="gameDetails">
-        <div className="accordion" id="accordionPanelsStayOpenExample">
-          <div className="accordion-item">
-            <h2 className="accordion-header" id="panelsStayOpen-headingOne">
-              <button
-                className="accordion-button  d-block text-center"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#panelsStayOpen-collapseOne"
-                aria-expanded="true"
-                aria-controls="panelsStayOpen-collapseOne"
-              >
-                Description
-              </button>
-            </h2>
-            <div
-              id="panelsStayOpen-collapseOne"
-              className="accordion-collapse collapse show"
-              aria-labelledby="panelsStayOpen-headingOne"
+            <button
+              type="button"
+              className="btn btn-outline-success"
+              onClick={() => {
+                const route = purchased ? '/profile/library' : '/profile/cart/ac'
+                if (!purchased)
+                  addToCart({
+                    img: gameData.bgim,
+                    name: gameData.name,
+                    id: gameId,
+                    price: +gameData.price,
+
+                  });
+                navigate(route)
+              }}
             >
-              <div className="accordion-body" style={{ backgroundColor: "black" }}>
-                {parse(String(gameData.description))}
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="accordion-item">
-              <h2 className="accordion-header" id="panelsStayOpen-headingTwo">
-                <button
-                  className="accordion-button collapsed  d-block text-center"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#panelsStayOpen-collapseTwo"
-                  aria-expanded="false"
-                  aria-controls="panelsStayOpen-collapseTwo"
-                >
-                  System Requirements
-                </button>
-              </h2>
-              <div
-                id="panelsStayOpen-collapseTwo"
-                className="accordion-collapse collapse"
-                aria-labelledby="panelsStayOpen-headingTwo"
-              >
-                <div className="accordion-body">
-                  <ol>
-                    {gameData.requirements ? (
-                      gameData.requirements.map((s) => <li>{s}</li>)
-                    ) : (
-                      <li></li>
-                    )}
-                  </ol>
-                </div>
-              </div>
-            </div>
-            <div className="accordion-item ">
-              <h2 className="accordion-header" id="panelsStayOpen-headingThree">
-                <button
-                  className="accordion-button collapsed d-block text-center"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#panelsStayOpen-collapseThree"
-                  aria-expanded="false"
-                  aria-controls="panelsStayOpen-collapseThree"
-                >
-                  Criric Review
-                </button>
-              </h2>
-              <div
-                id="panelsStayOpen-collapseThree"
-                className="accordion-collapse collapse"
-                aria-labelledby="panelsStayOpen-headingThree"
-              >
-                <div className="accordion-body">
-                  <strong>This is the third item's accordion body.</strong> It
-                  is hidden by default, until the collapse plugin adds the
-                  appropriate classNamees that we use to style each element.
-                  These classNamees control the overall appearance, as well as
-                  the showing and hiding via CSS transitions. You can modify any
-                  of this with custom CSS or overriding our default variables.
-                  It's also worth noting that just about any HTML can go within
-                  the <code>.accordion-body</code>, though the transition does
-                  limit overflow.
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="review">
-        <div>
-          <h2>Customer Review</h2>
-        </div>
-        {profileData.loggedIn ? (<Box
-          component="form"
-          noValidate
-          onSubmit={handleForm}>
-          <div className="mb-3">
-            <label htmlFor="exampleFormControlTextarea1" className="form-label">
-              Add Your Review
-            </label>
-            <textarea
-              className="form-control"
-              id="comment-text"
-              name="comment-text"
-              defaultValue={userComm}
-              rows="3"
-            ></textarea>
-            <ToggleButtonGroup
-              value={commStatus}
-              exclusive
-              onChange={() => { setCommStatus(!commStatus) }}
-              aria-label="text alignment"
-            >
-              <ToggleButton value={true} aria-label="left aligned">
-                <ThumbUpIcon sx={{ color: 'green' }} />
-              </ToggleButton>
-              <ToggleButton value={false} aria-label="centered">
-                <ThumbDownIcon sx={{ color: 'red' }} />
-              </ToggleButton>
-            </ToggleButtonGroup>
-          </div>
-          <button type="submit" className="btn btn-primary" style={{ marginBottom: '3%' }}>
-            Submit
-          </button>
-        </Box>) : <></>}
-        {commData ? commData.map(comment => (
-          <div className="comments">
+              {purchased ? (<span>View In Library</span>) : <span>Add To Cart</span>}
+            </button>
+          ) : (
+            <></>
+          )}
 
-            <div className="custdetail">
-              <h3 style={{ color: 'blue' }}>{comment.uname}</h3>
-              <div className="cust-rating">
-                <CommentRate rate={comment.rate} />
-                <text>Total Hours: {comment.hours}h</text>
-              </div>
-            </div>
-            <p style={{ color: 'black' }}>{comment.data}
-            </p></div>)) : (<p style={{ color: 'black' }}>No Comments Posted</p>)}
+        </div>
       </div>
+      <GameDetails gameData={gameData} />
+      <CustomerReview
+        commData={commData}
+        profileData={profileData}
+        handleForm={handleForm}
+        userComm={userComm}
+        commStatus={commStatus}
+        setCommStatus={setCommStatus}
+        CommentRate={CommentRate}
+      />
+
       <Snackbar
         open={snakb}
         autoHideDuration={6000}
