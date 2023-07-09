@@ -1,6 +1,5 @@
 import * as React from "react";
 import { googleLogout, useGoogleLogin } from "@react-oauth/google";
-
 import {
   CssBaseline,
   TextField,
@@ -19,9 +18,7 @@ import {
   Backdrop
 }
   from "@mui/material"
-
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import { useState, useContext } from "react";
@@ -29,7 +26,6 @@ import { useNavigate } from "react-router";
 import { LoginContext } from "../../Context/LoginContext";
 import { DrawerContext } from "../../Context/DrawerContext";
 import Cookies from "js-cookie";
-
 function Copyright(props) {
   return (
     <Typography
@@ -47,9 +43,17 @@ function Copyright(props) {
     </Typography>
   );
 }
+const { palette } = createTheme();
+const { augmentColor } = palette;
+const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
 
-const theme = createTheme();
-
+const theme = createTheme({
+  palette: {
+    main: createColor('#5e0202'),
+    nwh: createColor('#ffffff')
+  },
+},
+);
 export default function SignIn() {
   const setUserProfile = (data) => {
     setProfile({
@@ -144,7 +148,7 @@ export default function SignIn() {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <Avatar sx={{ m: 1, bgcolor: "red" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -155,6 +159,7 @@ export default function SignIn() {
             onSubmit={handleSubmit}
             noValidate
             sx={{ mt: 1 }}
+            color='nwh'
           >
             <TextField
               margin="normal"
@@ -162,6 +167,8 @@ export default function SignIn() {
               fullWidth
               id="email"
               label="Email Address/UserName"
+              color="main"
+              sx={{ input: { color: 'white', backgroundColor: 'black' }, label: { color: 'white' } }}
               name="email"
               autoComplete="email/username"
               autoFocus
@@ -170,30 +177,34 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
+              color="main"
               name="password"
               label="Password"
+              sx={{ input: { color: 'white', backgroundColor: 'black' }, label: { color: 'white' } }}
               type="password"
               id="password"
               autoComplete="current-password"
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              sx={{ color: '#5e0202' }}
+              control={<Checkbox value="remember" color="main" sx={{ color: '#5e0202' }} />}
               label="Remember me"
             />
             <Button
               type="submit"
               fullWidth
+              color="main"
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
               Sign In
             </Button>
-            <Button variant="outlined" onClick={() => googlelogin()}>
+            <Button color='main' variant="outlined" onClick={() => googlelogin()}>
               Sign in with Google
             </Button>
             <Grid container sx={{ mt: 2 }}>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link href="#" variant="body2" color='#ffffff'>
                   Forgot password?
                 </Link>
               </Grid>
@@ -201,6 +212,7 @@ export default function SignIn() {
                 <Link
                   href="http://localhost:3000/auth/register"
                   variant="body2"
+                  color='#ffffff'
                 >
                   {"Don't have an account? Sign Up"}
                 </Link>
@@ -208,7 +220,7 @@ export default function SignIn() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
+        <Copyright sx={{ mt: 8, mb: 4, color: '#ffffff' }} />
       </Container>
     </ThemeProvider>
   );

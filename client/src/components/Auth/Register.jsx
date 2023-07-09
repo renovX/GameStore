@@ -43,16 +43,24 @@ function Copyright(props) {
     >
       {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        BlueStar
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
     </Typography>
   );
 }
+const { palette } = createTheme();
+const { augmentColor } = palette;
+const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
 
-const theme = createTheme();
-
+const theme = createTheme({
+  palette: {
+    main: createColor('#5e0202'),
+    nwh: createColor('#ffffff')
+  },
+},
+);
 export default function Register() {
   const { setProfile } = useContext(LoginContext);
   const [isError, setError] = useState(false);
@@ -147,7 +155,7 @@ export default function Register() {
         >
           {isError ? <Alert severity="error">{errorMessage}</Alert> : <></>}
 
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <Avatar sx={{ m: 1, bgcolor: "red" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -167,6 +175,8 @@ export default function Register() {
                   id="userName"
                   label="User Name"
                   name="userName"
+                  color="main"
+                  sx={{ input: { color: 'white', backgroundColor: 'black' }, label: { color: 'white' } }}
                   autoComplete="username"
                 />
               </Grid>
@@ -178,6 +188,8 @@ export default function Register() {
                   fullWidth
                   id="firstName"
                   label="First Name"
+                  color="main"
+                  sx={{ input: { color: 'white', backgroundColor: 'black' }, label: { color: 'white' } }}
                   autoFocus
                 />
               </Grid>
@@ -189,6 +201,8 @@ export default function Register() {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
+                  color="main"
+                  sx={{ input: { color: 'white', backgroundColor: 'black' }, label: { color: 'white' } }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -202,6 +216,8 @@ export default function Register() {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  color="main"
+                  sx={{ input: { color: 'white', backgroundColor: 'black' }, label: { color: 'white' } }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -212,6 +228,8 @@ export default function Register() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  color="main"
+                  sx={{ input: { color: 'white', backgroundColor: 'black' }, label: { color: 'white' } }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -225,6 +243,8 @@ export default function Register() {
                   value={passVal}
                   autoComplete="new-password"
                   onChange={handleChange}
+                  color="main"
+                  sx={{ input: { color: 'white', backgroundColor: 'black' }, label: { color: 'white' } }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -238,12 +258,15 @@ export default function Register() {
                   id="confirm-password"
                   autoComplete="new-password"
                   onChange={handleChange2}
+                  color="main"
+                  sx={{ input: { color: 'white', backgroundColor: 'black' }, label: { color: 'white' } }}
                 />
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
+                  sx={{ color: '#5e0202' }}
                   control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
+                    <Checkbox value="allowExtraEmails" color="main" sx={{ color: '#5e0202' }} />
                   }
                   label="I want to receive inspiration, marketing promotions and updates via email."
                 />
@@ -253,20 +276,21 @@ export default function Register() {
               type="submit"
               fullWidth
               variant="contained"
+              color="main"
               sx={{ mt: 3, mb: 2 }}
             >
               Sign Up
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="http://localhost:3000/auth/signin" variant="body2">
+                <Link href="http://localhost:3000/auth/signin" variant="body2" color='#5e0202'>
                   Already have an account? Sign in
                 </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
+        <Copyright sx={{ mt: 5, color: '#5e0202' }} />
       </Container>
     </ThemeProvider>
   );
