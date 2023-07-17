@@ -90,21 +90,29 @@ const Cart = () => {
   };
   //var sum = 0;
   const handelPayment = async () => {
-    const resp = await axios.post(
-      "http://localhost:8000/stripe/create-checkout-session",
-      {
-        cartItems: profileData.cart,
-      }
-    );
-    if (resp.data.url) {
-      const url = `http://localhost:${process.env.REACT_APP_BACKEND_PORT}/auth/logout`;
+    try {
 
-      await axios.post(url, {
-        cart: profileData.cart,
-        email: profileData.email,
-      });
-      window.location.href = resp.data.url;
-    } else alert("no url");
+      console.log('str:' + profileData.token)
+      const resp = await axios.post(
+        process.env.REACT_APP_PAYMENT_URL,
+        {
+          cartItems: profileData.cart,
+        }, { headers: { Authorization: `Bearer ${profileData.token}` } }
+      );
+      if (resp.data.url) {
+        const url = `http://localhost:${process.env.REACT_APP_BACKEND_PORT}/auth/logout`;
+
+        await axios.post(url, {
+          cart: profileData.cart,
+          email: profileData.email,
+        });
+        window.location.href = resp.data.url;
+      } else alert("no url");
+    }
+    catch (e) {
+      alert('payment failed')
+      console.log(e)
+    }
   };
   //setPrice(gameArray[0].price + gameArray[1].price);
   return (

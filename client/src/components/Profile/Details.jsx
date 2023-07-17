@@ -1,5 +1,4 @@
 import React from "react";
-import Cookies from "js-cookie";
 import "./Profile.css";
 import { Paper } from "@mui/material";
 import { useState } from "react";
@@ -48,8 +47,8 @@ const Details = ({ snkbar, toggleSB, profileData }) => {
         };
         if (password != "") updatedProfile.password = password
 
-        const token = Cookies.get('token')
-        console.log(updatedProfile)
+        const token = profileData.token
+        //console.log(updatedProfile)
         const url = `http://localhost:${process.env.REACT_APP_BACKEND_PORT}/profile/update`;
         try {
             const resp = await axios.post(url, updatedProfile, { headers: { Authorization: `Bearer ${token}` } });

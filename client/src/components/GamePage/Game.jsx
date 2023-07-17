@@ -52,9 +52,9 @@ const Game = ({ cartitem, cartfn }) => {
   const [snakb, toggleSB] = useState(false)
   const addToCart = (item) => {
     const p = profileData;
-    const cart = profileData.cart;
-
-    cart.push(item);
+    const cart = profileData.cart
+    if (!cart.find(it => it.id == item.id))
+      cart.push(item);
     p.cart = cart;
     setProfile(p);
   };
