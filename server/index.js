@@ -8,8 +8,6 @@ import authRouter from "./routes/auth.js";
 import cookieParser from "cookie-parser";
 import commentRouter from "./routes/comments.js";
 dotenv.config();
-//import payRouter from "./routes/payment.js";
-import stripeRouter from "./routes/stripe.js";
 const app = express();
 app.use(
   cors({
@@ -31,7 +29,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use("/game", gameRouter);
 app.use("/profile", profileRouter);
-app.use("/stripe", stripeRouter);
 app.use('/comment', commentRouter)
 app.use("/auth", authRouter);
 const PORT = process.env.PORT || 8000;

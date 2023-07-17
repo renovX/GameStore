@@ -22,8 +22,7 @@
     "jsonwebtoken": "^9.0.0",
     "mongodb": "^5.0.1",
     "mongoose": "^6.10.3",
-    "nodemon": "^2.0.20",
-    "stripe": "^11.15.0"
+    "nodemon": "^2.0.20"
   },
   "type": "module"
 }
