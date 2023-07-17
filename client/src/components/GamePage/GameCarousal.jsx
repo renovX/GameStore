@@ -49,32 +49,32 @@ export default function GameCarousal(props) {
         </div>
       </div>
 
-      <div className="infotable">
-        <table className="table table-striped-columns itable">
-          <tbody>
-            <tr>
-              <td>Developer</td>
-              <td>{gameData.developer}</td>
-            </tr>
-            <tr>
-              <td>Release Date</td>
-              <td>{gameData.release_date}</td>
-            </tr>
-            <tr>
-              <td>Publisher</td>
-              <td>{gameData.publisher}</td>
-            </tr>
-            <tr>
-              <td>Genre</td>
-              <td>{gameData.genre}</td>
-            </tr>
-            <tr>
-              <td>Rating</td>
-              <td>{gameData.rating}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+
+      <table className="table table-striped-columns itable">
+        <tbody>
+          <tr>
+            <td>Developer</td>
+            <td>{gameData.developer}</td>
+          </tr>
+          <tr>
+            <td>Release Date</td>
+            <td>{gameData.release_date}</td>
+          </tr>
+          <tr>
+            <td>Publisher</td>
+            <td>{gameData.publisher}</td>
+          </tr>
+          <tr>
+            <td>Genre</td>
+            <td>{gameData.genre}</td>
+          </tr>
+          <tr>
+            <td>Rating</td>
+            <td>{gameData.rating}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+
   )
 }

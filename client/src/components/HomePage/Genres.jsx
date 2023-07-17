@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import genreData from "../assets/genreData.js";
+import genreData from "../../assets/genreData.js";
 //import "./genres.css";
 
 function Genres() {
@@ -8,12 +8,10 @@ function Genres() {
 
   return (
     <>
-      <section>
-        <div className="topic" height="250px"></div>
-        <div className="topic" height="150px">
+      <section >
+        <div className="topic">
           <p>GENRES</p>
         </div>
-        <div></div>
       </section>
 
       <section className="griddera">

@@ -1,6 +1,19 @@
+.acc-container {
+  padding-bottom: 4%;
+}
+
+.acc-heading {
+  color: rgb(94, 2, 2)
+}
+
+.table-container {
+  margin: auto;
+  width: 60%;
+  background-color: rgb(22, 22, 22);
+}
+
 .cart_title {
   margin-top: 0;
-  background-color: aqua;
 
 }
 
@@ -23,6 +36,14 @@ div.cart_title>h1 {
   width: 50%;
   max-width: 50%;
 
+}
+
+.lib-heading {
+  font-size: 4rem;
+  font-weight: 600;
+  color: white;
+  margin-top: 4%;
+  margin-bottom: 4%;
 }
 
 .flist-item {

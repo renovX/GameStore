@@ -54,7 +54,7 @@ const Library = () => {
   const [gameArray, setgameArray] = useState(profileData.library);
   return (
     <Container fixed>
-      <h1 style={{ color: "black" }}>All Games</h1>
+      <div className="lib-heading">GAMES</div>
       <Grid container>
         {gameArray.map((a) => (
           <Grid xs={4} sx={{ p: 3 }}>

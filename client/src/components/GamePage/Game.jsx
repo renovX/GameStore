@@ -127,13 +127,13 @@ const Game = ({ cartitem, cartfn }) => {
         <h2 className="buy-heading">Buy {shortHand(gameData.name)}</h2>
 
         <div className="p2">
-          <div className="priceval">Price:{gameData.price}</div>
+          <div className="priceval">₹{gameData.price}</div>
 
           {profileData.loggedIn ? (
 
             <button
               type="button"
-              className="btn btn-outline-success"
+              className="buy-button"
               onClick={() => {
                 const route = purchased ? '/profile/library' : '/profile/cart/ac'
                 if (!purchased)

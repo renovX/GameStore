@@ -1,22 +1,20 @@
 import React from "react";
-
 import "./genres.css";
 
 function Genres() {
   return (
     <>
       <section>
-        <div className="topic" height="250px"></div>
-        <div className="topic" height="150px">
+
+        <div className="topic" >
           <p>PUBLISHERS</p>
         </div>
-        <div></div>
       </section>
 
       <section className="griddera">
         <figure class="hover-img">
           <img
-            src={require("./images/ea.jpg")}
+            src={require("../images/ea.jpg")}
             alt="ea-logo"
             height="83%"
             width="100%"
@@ -29,7 +27,7 @@ function Genres() {
         </figure>
         <figure class="hover-img">
           <img
-            src={require("./images/ubisoft11.jfif")}
+            src={require("../images/ubisoft11.jfif")}
             alt=""
             height="83%"
             width="100%"
@@ -42,7 +40,7 @@ function Genres() {
         </figure>
         <figure class="hover-img">
           <img
-            src={require("./images/microsoft1.png")}
+            src={require("../images/microsoft1.png")}
             alt=""
             height="83%"
             width="100%"
@@ -55,7 +53,7 @@ function Genres() {
         </figure>
         <figure class="hover-img">
           <img
-            src={require("./images/sony.jpg")}
+            src={require("../images/sony.jpg")}
             alt=""
             height="83%"
             width="100%"
@@ -68,7 +66,7 @@ function Genres() {
         </figure>
         <figure class="hover-img">
           <img
-            src={require("./images/warner.jfif")}
+            src={require("../images/warner.jfif")}
             alt=""
             height="83%"
             width="100%"
@@ -81,7 +79,7 @@ function Genres() {
         </figure>
         <figure class="hover-img">
           <img
-            src={require("./images/bandai.png")}
+            src={require("../images/bandai.png")}
             alt=""
             height="83%"
             width="100%"
@@ -94,7 +92,7 @@ function Genres() {
         </figure>
         <figure class="hover-img">
           <img
-            src={require("./images/rock.jfif")}
+            src={require("../images/rock.jfif")}
             alt=""
             height="83%"
             width="100%"
@@ -107,7 +105,7 @@ function Genres() {
         </figure>
         <figure class="hover-img">
           <img
-            src={require("./images/cdp.png")}
+            src={require("../images/cdp.png")}
             alt=""
             height="83%"
             width="100%"
@@ -120,7 +118,7 @@ function Genres() {
         </figure>
         <figure class="hover-img">
           <img
-            src={require("./images/activision.webp")}
+            src={require("../images/activision.webp")}
             alt=""
             height="83%"
             width="100%"
@@ -133,7 +131,7 @@ function Genres() {
         </figure>
         <figure class="hover-img">
           <img
-            src={require("./images/konami1.png")}
+            src={require("../images/konami1.png")}
             alt=""
             height="83%"
             width="100%"
@@ -146,7 +144,7 @@ function Genres() {
         </figure>
         <figure class="hover-img">
           <img
-            src={require("./images/sega.png")}
+            src={require("../images/sega.png")}
             alt=""
             height="83%"
             width="100%"
@@ -159,7 +157,7 @@ function Genres() {
         </figure>
         <figure class="hover-img">
           <img
-            src={require("./images/valve.jfif")}
+            src={require("../images/valve.jfif")}
             alt=""
             height="83%"
             width="100%"
@@ -170,43 +168,6 @@ function Genres() {
             </figcaption>
           </a>
         </figure>
-      </section>
-
-      <section className="features">
-        <div className="feature-container">
-          <img
-            src="https://cdn-images-1.medium.com/max/2000/1*HFAEJvVOq4AwFuBivNu_OQ.png"
-            alt="Flexbox Feature"
-          />
-          <h2>Flexbox Featured</h2>
-          <p>
-            This pen contains use of flexbox for the headline and feature
-            section! We use it in our mobile navbar and show the power of mixing
-            css grid and flexbox.
-          </p>
-        </div>
-        <div className="feature-container">
-          <img
-            src="https://blog.webix.com/wp-content/uploads/2017/06/20170621-CSS-Grid-Layout-710x355-tiny.png"
-            alt="Flexbox Feature"
-          />
-          <h2>CSS Grid Navigation</h2>
-          <p>
-            While flexbox is used for the the mobile navbar, CSS grid is used
-            for the desktop navbar showing many ways we can use both.
-          </p>
-        </div>
-        <div className="feature-container">
-          <img
-            src="https://www.graycelltech.com/wp-content/uploads/2015/06/GCT-HTML5.jpg"
-            alt="Flexbox Feature"
-          />
-          <h2>Basic HTML5</h2>
-          <p>
-            This pen contains basic html to setup the page to display the
-            responsive navbar.
-          </p>
-        </div>
       </section>
     </>
   );

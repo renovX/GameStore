@@ -3,11 +3,11 @@ import parse from 'html-react-parser';
 export default function GameDetails(props) {
     const gameData = props.gameData
     return (<div className="gameDetails">
-        <div className="accordion" id="accordionPanelsStayOpenExample">
-            <div className="accordion-item">
+        <div className="accordion" id="accordionPanelsStayOpenExample" >
+            <div className="accordion-item" style={{ borderColor: 'black' }}>
                 <h2 className="accordion-header" id="panelsStayOpen-headingOne">
                     <button
-                        className="accordion-button  d-block text-center"
+                        className="accordion-button  d-block text-center descp-heading"
                         type="button"
                         data-bs-toggle="collapse"
                         data-bs-target="#panelsStayOpen-collapseOne"
@@ -28,10 +28,10 @@ export default function GameDetails(props) {
                 </div>
             </div>
             <div>
-                <div className="accordion-item">
+                <div className="accordion-item" style={{ borderColor: 'black' }}>
                     <h2 className="accordion-header" id="panelsStayOpen-headingTwo">
                         <button
-                            className="accordion-button collapsed  d-block text-center"
+                            className="accordion-button collapsed  d-block text-center descp-heading"
                             type="button"
                             data-bs-toggle="collapse"
                             data-bs-target="#panelsStayOpen-collapseTwo"
@@ -58,10 +58,10 @@ export default function GameDetails(props) {
                         </div>
                     </div>
                 </div>
-                <div className="accordion-item ">
+                <div className="accordion-item " style={{ borderColor: 'black' }}>
                     <h2 className="accordion-header" id="panelsStayOpen-headingThree">
                         <button
-                            className="accordion-button collapsed d-block text-center"
+                            className="accordion-button collapsed d-block text-center descp-heading"
                             type="button"
                             data-bs-toggle="collapse"
                             data-bs-target="#panelsStayOpen-collapseThree"

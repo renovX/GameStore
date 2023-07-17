@@ -27,10 +27,9 @@ const Account = () => {
 
 
   return (
-    <Container fixed sx={{ bgcolor: "grey" }}>
-      <div>
-        <h1>Account</h1>
-      </div>
+    <Container className="acc-container">
+
+      <h1 className="topic">ACCOUNT</h1>
       <div>
         <Accordion sx={style}>
           <AccordionSummary

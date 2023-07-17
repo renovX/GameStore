@@ -82,7 +82,6 @@ export default function TemporaryDrawer() {
     <Box
       sx={{
         width: anchor === "top" || anchor === "bottom" ? "auto" : 250,
-        bgcolor: "grey",
         mt: "24%",
       }}
       role="presentation"
@@ -184,12 +183,17 @@ export default function TemporaryDrawer() {
   return (
     <React.Fragment key={anchor}>
       <Button
-        sx={{ color: "white", p: 0, textTransform: "none" }}
+        sx={{ color: "white", p: 0, textTransform: "none", fontSize: '1.3em' }}
         onClick={toggleDrawer(anchor)}
       >
         Profile
       </Button>
       <Drawer
+        PaperProps={{
+          sx: {
+            backgroundColor: "#444444"
+          }
+        }}
         anchor={anchor}
         open={state[anchor]}
         onClose={toggleDrawer(anchor, false)}

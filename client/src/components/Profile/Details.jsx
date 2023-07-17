@@ -128,18 +128,18 @@ const Details = ({ snkbar, toggleSB, profileData }) => {
         <Box component="form"
             onSubmit={handleSubmit}
             noValidate>
-            <TableContainer component={Paper} sx={{ m: "auto", width: "60%" }}>
-                <Table aria-label="simple table">
+            <TableContainer component={Paper} sx={{ m: 'auto', width: '60%', backgroundColor: 'rgb(22, 22, 22)' }}>
+                <Table aria-label="simple table" >
                     <TableBody>
                         <TableRow
-                            sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                            sx={{ "&:last-child td, &:last-child th": { border: 2 } }}
                         >
                             <TableCell
                                 component="th"
                                 scope="row"
                                 sx={{ width: "20%", height: "50px" }}
                             >
-                                <Typography color="blue"> First Name</Typography>
+                                <Typography color="red" fontWeight={1000}> First Name</Typography>
                             </TableCell>
                             <TableCell align="right">
                                 <TextField
@@ -148,7 +148,8 @@ const Details = ({ snkbar, toggleSB, profileData }) => {
                                     defaultValue={profileData.firstName}
                                     variant="outlined"
                                     required
-                                    sx={{ width: "100%" }}
+
+                                    sx={{ width: "100%", input: { color: 'white', backgroundColor: 'black' } }}
                                 />
                             </TableCell>
                         </TableRow>
@@ -160,7 +161,7 @@ const Details = ({ snkbar, toggleSB, profileData }) => {
                                 scope="row"
                                 sx={{ width: "20%", height: "50px" }}
                             >
-                                <Typography color="blue"> Last Name</Typography>
+                                <Typography color="red" fontWeight={1000}> Last Name</Typography>
                             </TableCell>
                             <TableCell align="right">
                                 <TextField
@@ -169,7 +170,7 @@ const Details = ({ snkbar, toggleSB, profileData }) => {
                                     defaultValue={profileData.lastName}
                                     variant="outlined"
                                     required
-                                    sx={{ width: "100%" }}
+                                    sx={{ width: "100%", input: { color: 'white', backgroundColor: 'black' } }}
                                 />
                             </TableCell>
                         </TableRow>
@@ -177,7 +178,7 @@ const Details = ({ snkbar, toggleSB, profileData }) => {
                             sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                         >
                             <TableCell component="th" scope="row" sx={{ width: "25%" }}>
-                                <Typography color="blue">Phone Number</Typography>
+                                <Typography color="red" fontWeight={1000}>Phone Number</Typography>
                             </TableCell>
                             <TableCell align="right">
                                 <TextField
@@ -189,7 +190,7 @@ const Details = ({ snkbar, toggleSB, profileData }) => {
                                         shrink: true,
                                     }}
                                     defaultValue={profileData.phone}
-                                    sx={{ width: "100%" }}
+                                    sx={{ width: "100%", input: { color: 'white', backgroundColor: 'black' } }}
 
                                 />
                             </TableCell>
@@ -198,14 +199,14 @@ const Details = ({ snkbar, toggleSB, profileData }) => {
                             sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                         >
                             <TableCell component="th" scope="row" sx={{ width: "20%" }}>
-                                <Typography color="blue">Email</Typography>
+                                <Typography color="red" fontWeight={1000}>Email</Typography>
                             </TableCell>
                             <TableCell align="right">
                                 <TextField
                                     variant="outlined"
                                     id="email"
                                     value={profileData.email}
-                                    sx={{ width: "100%" }}
+                                    sx={{ width: "100%", input: { color: 'white', backgroundColor: 'black' } }}
                                 //onChange={(e) => {setEmail(e.target.value);}}
                                 />
                             </TableCell>
@@ -218,10 +219,10 @@ const Details = ({ snkbar, toggleSB, profileData }) => {
                                 scope="row"
                                 sx={{ width: "auto" }}
                             >
-                                <Typography color="blue">Password</Typography>
+                                <Typography color="red" fontWeight={1000}>Password</Typography>
                             </TableCell>
                             <TableCell align="right">
-                                <PasswordField type="pass" />
+                                <PasswordField type="pass" sx={{ input: { color: 'white', backgroundColor: 'black' } }} />
                             </TableCell>
                         </TableRow>
                         {passwordChanged ? (
@@ -233,10 +234,10 @@ const Details = ({ snkbar, toggleSB, profileData }) => {
                                     scope="row"
                                     sx={{ width: "auto" }}
                                 >
-                                    <Typography color="blue">Confirm Password</Typography>
+                                    <Typography color="red" fontWeight={1000}>Confirm Password</Typography>
                                 </TableCell>
                                 <TableCell align="right">
-                                    <PasswordField />
+                                    <PasswordField sx={{ input: { color: 'white', backgroundColor: 'black' } }} />
                                 </TableCell>
                             </TableRow>
                         ) : (
@@ -247,7 +248,7 @@ const Details = ({ snkbar, toggleSB, profileData }) => {
                             sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                         >
                             <TableCell component="th" scope="row" sx={{ width: "20%" }}>
-                                <Typography color="blue">Address</Typography>
+                                <Typography color="red" fontWeight={1000}>Address</Typography>
                             </TableCell>
                             <TableCell align="right">
                                 <table width="100%">
@@ -259,7 +260,7 @@ const Details = ({ snkbar, toggleSB, profileData }) => {
                                                     variant="standard"
                                                     name='line1'
                                                     label="Line 1"
-                                                    sx={{ width: "100%" }}
+                                                    sx={{ width: "100%", input: { color: 'white', backgroundColor: 'black' }, paddingLeft: '1%' }}
                                                     defaultValue={profileData.addr[0]}
 
                                                 />
@@ -271,7 +272,7 @@ const Details = ({ snkbar, toggleSB, profileData }) => {
                                                     label="Line 2"
                                                     name='line2'
                                                     variant="standard"
-                                                    sx={{ width: "100%" }}
+                                                    sx={{ width: "100%", input: { color: 'white', backgroundColor: 'black' } }}
                                                     defaultValue={profileData.addr[1]}
 
                                                 />
@@ -283,7 +284,7 @@ const Details = ({ snkbar, toggleSB, profileData }) => {
                                                     label="City"
                                                     name='city'
                                                     variant="standard"
-                                                    sx={{ width: "100%" }}
+                                                    sx={{ width: "100%", input: { color: 'white', backgroundColor: 'black' } }}
                                                     defaultValue={profileData.addr[2]}
                                                 />
                                             </td>
@@ -294,7 +295,7 @@ const Details = ({ snkbar, toggleSB, profileData }) => {
                                                     label="State"
                                                     name='state'
                                                     variant="standard"
-                                                    sx={{ width: "100%" }}
+                                                    sx={{ width: "100%", input: { color: 'white', backgroundColor: 'black' } }}
                                                     defaultValue={profileData.addr[3]}
                                                 />
                                             </td>
@@ -306,6 +307,7 @@ const Details = ({ snkbar, toggleSB, profileData }) => {
                                                     name='country'
                                                     variant="standard"
                                                     defaultValue={profileData.addr[4]}
+                                                    sx={{ input: { color: 'white', backgroundColor: 'black' } }}
                                                 />
                                             </td>
                                         </tr>

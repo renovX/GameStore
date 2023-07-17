@@ -81,7 +81,7 @@ h2 {
 
 .nav-item a {
   color: #fff;
-  font-size: 0.9rem;
+  font-size: 1.3rem;
   font-weight: 400;
   text-decoration: none;
   transition: color 0.3s ease-out;
@@ -187,7 +187,8 @@ h2 {
 input {
   border: 0;
   border-left: 1px solid #ccc;
-  border-radius: 0; /* FOR SAFARI */
+  border-radius: 0;
+  /* FOR SAFARI */
   outline: 0;
   padding: 5px;
 }
@@ -238,9 +239,11 @@ input {
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
@@ -250,9 +253,11 @@ input {
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
@@ -262,9 +267,11 @@ input {
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
@@ -343,6 +350,7 @@ input {
     display: none;
   }
 }
+
 #pp {
   margin-left: 5px;
 }

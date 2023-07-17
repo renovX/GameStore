@@ -170,14 +170,17 @@
 }
 
 .topic p {
-  margin-left: 2%;
-  font-size: 100px;
+  margin-left: 43%;
+  margin-top: 5%;
+  font-size: 4rem;
   font-weight: 600;
   color: white;
+
 
 }
 
 .griddera {
+  margin-left: 4.5%;
   width: 100%;
   display: grid;
   grid-gap: 5px;

@@ -14,15 +14,9 @@ import {
   Button,
   ListItemText,
 } from "@mui/material";
-//import Container from "@mui/material/Container";
-//import List from "@mui/material/List";
-//import Divider from "@mui/material/Divider";
-//import ListItem from "@mui/material/ListItem";
-//import ListItemText from "@mui/material/ListItemText";
 import { useState, useEffect } from "react";
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
-import { display } from "@mui/system";
 import { LoginContext } from "../../Context/LoginContext";
 import { DrawerContext } from "../../Context/DrawerContext";
 const Cart = () => {
@@ -114,7 +108,7 @@ const Cart = () => {
   };
   //setPrice(gameArray[0].price + gameArray[1].price);
   return (
-    <Container fixed sx={{ bgcolor: "primary.main" }}>
+    <Container fixed>
       {String(payStatus) == "fail" ? (
         <Card variant="outlined" sx={{ bgcolor: "red" }}>
           <span>PAYMENT FAILED</span>
@@ -122,10 +116,10 @@ const Cart = () => {
       ) : (
         <></>
       )}
-      <h1>CART</h1>
+      <div className="lib-heading">CART</div>
       {cartItems.length == 0 ? (
-        <Container sx={{ bgcolor: "primary.main", mr: "20%", height: "300px" }}>
-          <h2>Your Cart is Empty</h2>
+        <Container sx={{ mr: "20%", height: "300px" }}>
+          <h2 style={{ color: 'white' }}>Your Cart is Empty</h2>
           <Button
             variant="outlined"
             color="success"
@@ -147,9 +141,9 @@ const Cart = () => {
                     sx={{ displayPrint: "flex", flexDirection: "row" }}
                     divider
                   >
-                    <img src={g.img} style={{ height: "10%", width: "10%" }} />
+                    <img src={g.img} style={{ height: "10%", width: "10%", marginRight: '3%' }} />
                     <span className="gameName">{" " + g.name}</span>
-                    <span className="gprice">{g.price}</span>
+                    <span className="gprice">₹{g.price}</span>
                     <IconButton
                       aria-label="delete"
                       sx={{ position: "absolute", right: "2%", width: 5 }}
@@ -168,7 +162,7 @@ const Cart = () => {
             )}
             <ListItem sx={{ displayPrint: "flex", flexDirection: "row" }}>
               <span>Total</span>
-              <span className="totalPrice">{totalPrice}</span>
+              <span className="totalPrice">₹{totalPrice}</span>
             </ListItem>
           </List>
           <Button
@@ -190,8 +184,9 @@ const Cart = () => {
             Purchase
           </Button>
         </>
-      )}
-    </Container>
+      )
+      }
+    </Container >
   );
 };
 export default Cart;

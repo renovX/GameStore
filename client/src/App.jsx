@@ -4,10 +4,11 @@ import PrivateRoutes from "./utils/PrivateRoutes";
 import React, { useEffect } from "react";
 import "../node_modules/bootstrap/dist/css/bootstrap.css";
 import Navbar from "./components/Navbar.jsx";
+import Footer from "./components/Footer";
 import "./components/Navbar.css";
 import GamesByGenre from "./components/GamesByGenre";
 import { Routes, Route } from "react-router-dom";
-import Landing from "./Landing";
+import Landing from "./components/HomePage/Landing";
 import Game from "./components/GamePage/Game";
 import Cart from "./components/Profile/Cart";
 import Account from "./components/Profile/Account";
@@ -107,6 +108,7 @@ function App() {
             </Route>
 
           </Routes>
+          <Footer />
         </LoginContext.Provider>
       </DrawerContext.Provider>
     </div>

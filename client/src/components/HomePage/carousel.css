@@ -4,7 +4,6 @@
   min-width: 100%;
   min-height: 50vh;
   max-width: 100%;
-  max-height: 50vh;
 }
 
 /* Add some content at the bottom of the video/page */
@@ -17,8 +16,14 @@
 }
 
 .carousal-container {
-  max-width: 80%;
+  margin-top: 2%;
   margin-left: 10%;
+  height: 34rem;
+}
+
+.carousal-img {
+  height: 33rem;
+  width: 100%;
 }
 
 /* Style the button used to pause/play the video */
