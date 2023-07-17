@@ -29,6 +29,10 @@ const profileSchema = mongoose.Schema({
   address: {
     type: Array,
   },
+  friendList:
+  {
+    type: Array
+  },
   libraryGames: {
     type: Array,
   },

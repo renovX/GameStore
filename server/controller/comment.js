@@ -10,6 +10,7 @@ const commentController = {
         const { gameName, profileId, commdata, rate } = req.body;
         try {
             //finding whether comment collection for game is present
+            console.log(profileId)
             const commentdoc = await Comments.findOne({ gameId: gameId })
             const { userName, libraryGames } = await Profile.findById(new mongoose.Types.ObjectId(profileId))
             const x = libraryGames.find(game => game.id == gameId)
@@ -29,6 +30,7 @@ const commentController = {
             else {
                 //if not, create new collection
                 await Comments.create({ gameId: gameId, gameName: gameName, comments: [newcomment,], rating: 0 })
+                console.log('created new comment')
 
             }
             console.log(newcomment)
@@ -37,6 +39,7 @@ const commentController = {
 
         } catch (e) {
             res.send("Failed" + e);
+            console.log(e)
         }
     },
     getComments: async (req, res, next) => {
@@ -50,7 +53,7 @@ const commentController = {
 
                 res.send(commentDoc.comments);
             } else {
-                console.log("NotFound");
+                console.log("Not comment found");
                 //res.send("NotFound");
             }
         } catch (e) {

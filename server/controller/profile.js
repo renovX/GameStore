@@ -2,19 +2,9 @@ import Profile from "../model/Profile.js";
 import Game from "../model/Game.js";
 import bcrypt from "bcrypt";
 import mongoose from "mongoose";
-function cookieParser(cookieString) {
-  if (cookieString === "") return {};
-  let pairs = cookieString.split(";");
-  let splittedPairs = pairs.map((cookie) => cookie.split("="));
-  const cookieObj = splittedPairs.reduce(function (obj, cookie) {
-    obj[decodeURIComponent(cookie[0].trim())] = decodeURIComponent(
-      cookie[1].trim()
-    );
-
-    return obj;
-  }, {});
-
-  return cookieObj;
+function fetchEmail(req) {
+  const token = req.headers.authorization.split(' ')[1]
+  return JSON.parse(atob(token.split(".")[1])).email;
 }
 const profileController = {
   getData: async (req, res) => {
@@ -40,6 +30,26 @@ const profileController = {
       res.send(e.message);
     }
   },
+  getPartialData: async (req, res) => {
+
+    const username = req.params['username'];
+    console.log(`Requesting partial data for ${username}`)
+    try {
+      const profileData = await Profile.findOne({ userName: username }).select("userName libraryGames")
+      if (profileData) {
+        res.send(profileData)
+        console.log('Sent partial data')
+      }
+      else
+        res.status(404).send('error')
+      console.log(profileData)
+    }
+
+    catch (e) {
+      res.status(404).send('error')
+      console.log(e.message)
+    }
+  },
   login: async (req, res) => {
     try {
       const { email, password } = req.body;
@@ -55,25 +65,14 @@ const profileController = {
   },
   addToLibrary: async (req, res) => {
     try {
-      res.setHeader("Access-Control-Allow-Credentials", true);
-      //const { email, cartItems } = req.body;
-      //console.log("Token is:" + req.cookies.token);
-      const email = JSON.parse(atob(req.cookies.token.split(".")[1])).email;
+
+      const email = fetchEmail(req)
       console.log("email is:" + email);
       const profile = await Profile.findOne({ email: email });
 
-      const cartItems = profile.cart;
+      const cartItems = profile.cart.map(item => ({ ...item, hours: 0 }));
 
       console.log(cartItems);
-      // const gameList = await Promise.all(
-      //   cartItems.map(async (item) => {
-      //     var id = mongoose.Types.ObjectId(item.id);
-      //     return await Game.findById(id);
-      //   })
-      // );
-      // console.log(cartItems);
-      // console.log(gameList);
-
       const library = profile.libraryGames.concat(cartItems);
       await Profile.findOneAndUpdate(
         { email: email },
@@ -93,17 +92,15 @@ const profileController = {
       let newData = { firstName: firstName, lastName: lastName, phoneNumber: phone, address: addr }
       if (req.body.password) {
 
-        const encrypted_pass = await bcrypt.hash(password, 10);
+        const encrypted_pass = await bcrypt.hash(req.body.password, 10);
         newData.password = encrypted_pass
       }
+
       const email = req.body.email
       const profile = await Profile.findOneAndUpdate(
         { email: email },
         newData
       );
-      //res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
-      //res.setHeader('Access-Control-Allow-Credentials', 'true')
-      console.log(req.body)
       console.log('Profile Update Success')
       res.send(profile);
 
@@ -112,5 +109,18 @@ const profileController = {
       console.log(e)
     }
   },
+  addFriend: async (req, res) => {
+    const frienduname = req.params['uname']
+    const email = fetchEmail(req)
+    try {
+      await Profile.findOneAndUpdate({ email: email }, { $addToSet: { 'friendList': frienduname } })
+      console.log('Friend Added')
+      res.sendStatus(200)
+    }
+    catch (e) {
+      res.status(403).send(e.message)
+      console.log(e)
+    }
+  }
 };
 export default profileController;

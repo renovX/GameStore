@@ -6,7 +6,6 @@ import dotenv from "dotenv";
 import profileRouter from "./routes/profile.js";
 import authRouter from "./routes/auth.js";
 import cookieParser from "cookie-parser";
-import verify from "./middleware/verify.js";
 import commentRouter from "./routes/comments.js";
 dotenv.config();
 //import payRouter from "./routes/payment.js";
@@ -31,7 +30,7 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use("/game", gameRouter);
-app.use("/profile", verify, profileRouter);
+app.use("/profile", profileRouter);
 app.use("/stripe", stripeRouter);
 app.use('/comment', commentRouter)
 app.use("/auth", authRouter);

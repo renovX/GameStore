@@ -34,6 +34,7 @@ const authController = {
         phoneNumber: phone,
         password: encrypted_pass,
         cart: [],
+        friendList: [],
         address: ["", "", "", "", ""],
         libraryGames: [],
       });
@@ -84,7 +85,7 @@ const authController = {
       }
     );
 
-    const { email, name } = resp.data;
+    const { email, firstName, lastName, } = resp.data;
     const profile = await Profile.findOne({ email: email });
 
     if (profile) {
@@ -93,12 +94,16 @@ const authController = {
     } //create profile
     else {
       console.log("Creating");
+      const username = String(firstName).toLowerCase + '_' + lastName
       const newProfile = await Profile.create({
-        name: name,
+        firstName: firstName,
+        userName: username,
+        lastName: lastName,
         email: email,
         password: "sample",
         phoneNumber: 0,
         cart: [],
+        friendList: [],
         libraryGames: [],
         address: ["", "", "", "", ""],
       });
