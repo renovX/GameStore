@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use("/stripe", stripeRouter);
-const PORT = process.env.PORT || 4555;
+const PORT = process.env.PORT || 8001;
 try {
   app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);

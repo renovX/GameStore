@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  client:
+    build: ./client
+    container_name: client
+    ports:
+      - '3000:3000'
+    stdin_open: true
+    tty: true
+  server:
+    build: ./server
+    container_name: server
+    ports:
+      - '8000:8000'
+  server2:
+    build: ./server2
+    container_name: server2
+    ports:
+      - '8001:8001'

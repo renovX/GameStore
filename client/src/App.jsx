@@ -29,6 +29,7 @@ function App() {
 
   const [profileData, setProfile] = useState({
     id: '',
+    token: '',
     loggedIn: false,
     userName: "",
     firstName: "",
@@ -45,8 +46,11 @@ function App() {
   useEffect(() => {
     async function fetchData() {
       const token = Cookies.get('token')
-      if (token)
+      if (token) {
         setProfile({ loggedIn: true })
+        profileData.token = token
+      }
+
       const res = await axios.get(
         `http://localhost:${process.env.REACT_APP_BACKEND_PORT}/profile/get-data`,
         { headers: { Authorization: `Bearer ${token}` } }
@@ -54,6 +58,7 @@ function App() {
       if (res) {
         setProfile({
           loggedIn: true,
+          token: token,
           id: res.data._id,
           userName: res.data.userName,
           firstName: res.data.firstName,
